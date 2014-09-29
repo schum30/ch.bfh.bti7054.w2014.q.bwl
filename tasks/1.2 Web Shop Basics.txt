@@ -1,0 +1,35 @@
+Idee:
+
+Wir verkaufen alkoholische Getränke mit den Kategorien Bier, Wein und Likör.
+
+Die Getränke können individuell zusammengestellt werden. Dabei kann der Kunde zwischen verschieden grossen Kisten wählen. Ausserdem sind Geschenkkörbe möglich.
+
+Produkte:
+
+Kategorie Bier:
+Aare Bier Amber / 50cl / 5% / 3.30 + .30 Depot / Flasche
+Appenzeller Brandlöscher / 33cl / 4.8% / 2.30 / Flasche
+Appenzeller Quöllfrisch / 50cl / 4.8% / 3.00 / Dose
+Bad Attitude Dude / 33cl / 7.51% / 4.30 / Dose
+Basler Bier / 33cl / 5.2% / 2.90 + .30 Depot / Flasche
+Boxer Old / 50cl / 5.2% / 3.00 + 1.00 Depot / Bügel
+Egger Maximus / 33cl / 5.2% / 2.40 + .30 Depot / Flasche
+Einsiedler Maisgold / 30cl / 5% / 2.70 + .30 Depot / Flasche
+Solothurner Öufi Bier / 50cl / 4.7% / 3.50 + .50 Depot / Bügel
+Ueli Bier Partyfass / 500cl / 5% / 33.50 / Fass
+
+Kategorie Wein:
+Staatskellerei Zürich - Akkurat Rot / 75cl / 13% / 16.80 / Flasche mit Drehverschluss / Rotwein
+Rouvinez - Fendant de Sierre / 75cl / 12.5% / 15.80 / Flasche mit Drehverschluss / Weisswein
+T. Ottiger - Luzerner Blauburgunder / 50cl / 12.5% / 15.80 / Flasche Drehverschluss / Rotwein
+Siebe Dupf - Wintersinger Pinot Noir Rosé / 75cl / 12.5% / 17.50 / Flasche mit Drehverschluss / Rosé
+Roter Sauser / 49cl / 1.5% / 3.70 + .30 Depot / Flasche mit Korken / Sauser
+Domaine les Hutins - Pinot Gris Dardagny / 75cl / 14% / 19.80 / Flasche mit Korken / Weisswein
+
+Kategorie Likör:
+Willisauer Ringli Likör / 70cl / 18% / 14.90
+Bündner Röteli / 100cl / 22% / 29.20
+Etter Vieille Prûne / 70cl / 41% / 57.30
+Baileys Irish Cream / 70cl / 17% / 19.60
+
+Die Kunden die Bestellung als Geschenk lassen, z. B. als Meter Bier.
