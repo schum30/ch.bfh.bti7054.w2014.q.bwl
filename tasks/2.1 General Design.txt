@@ -1,1 +1,10 @@
-test
+name:
+bwl (beer wine liquer)
+
+adresse:
+Hopfenweg 52
+3018 Bern
+
+Logo:
+Bierflasche
+
