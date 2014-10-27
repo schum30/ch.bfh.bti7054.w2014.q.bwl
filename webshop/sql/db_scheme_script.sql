@@ -32,6 +32,7 @@ CREATE TABLE Box(
 );
 CREATE TABLE Customer(
 	ID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	UserName varchar(30),
 	FirstName varchar(30),
 	LastName varchar(30),
 	Address varchar(30),
@@ -50,7 +51,7 @@ CREATE TABLE OrderedBottle(
 	Price decimal(5,2),
 	Depot decimal(5,2),
 	Quantity int,
-	OrderID int,
+	OrderID int, 
 	PRIMARY KEY(BottleID, OrderID),
 	FOREIGN KEY(BottleID) REFERENCES Bottle(ID),
 	FOREIGN KEY(OrderID) REFERENCES Order(ID),
