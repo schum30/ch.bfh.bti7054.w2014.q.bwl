@@ -1,6 +1,6 @@
 <?php 
-$product = $products[$id];
 $id = isset($_GET["id"]) ? $_GET["id"] : NULL;
+$product = $products[$id];
 ?>
 <div class="product">
 	<ul>

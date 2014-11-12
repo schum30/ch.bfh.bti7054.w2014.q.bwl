@@ -1,13 +1,17 @@
 <?php 
 	include "models/product.php";
-	include "lang.php";
 	include "database.php";
+	include "lang.php";
 	
 	$products = array(
 		new Product("Burgdorfer Helles",3.45,0), 
 		new Product("Aare Amber",3.50,1)
 	);
+	
 	$view = isset($_GET["view"]) ? $_GET["view"] : NULL;
+	
+	$username = isset($_COOKIE["username"]) ? $_COOKIE["username"] : NULL;
+	
 	$pdo = Database::connect();
 ?>
 <html>
@@ -20,8 +24,10 @@
 		</script>
 	</head>
 	<body>
-		<header><?php include('header.php') ?></header>
 		<?php
+		include('views/header.php');
+		include('views/login.php');
+		
 		switch($view){
 		case NULL:
 		case "default":
@@ -33,8 +39,13 @@
 		case "cart":
 			include('views/cart.php');
 			break;
+		case "logout":
+			setcookie("username","",-1);
+			include('views/logout.php');
+			break;
 		}
+		
+		include('views/footer.php')
 		?>
-		<footer><?php include('footer.php') ?></footer>
 	</body>
 </html>
