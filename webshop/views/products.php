@@ -1,14 +1,16 @@
 <div id="products">
 <?php	foreach ($products as $product) {?>
-	<div class="product">
-		<ul>
-			<a href=./index.php?view=detail&id=<?php echo $product->id ?>>
-				<li><img src="./img/AppenzellerBrandloescher_Flasche.png" style="width:50px;">
-			</a>
-			<li><?php echo "$expr[name]: $product->name" ?></li>
-			<li><?php echo "$expr[price]: $product->price" ?></li>
-			<li><a href="javascript:addToCart(<?php echo $product->id ?>)">add to cart!</a></li>
-		</ul>
+	<div class="product" name="<?php echo $product->id ?>">
+		<span class="title"><?php echo $product->name ?></span>
+		<a href=./index.php?view=detail&id=<?php echo $product->id ?>>
+			<img clas="productimage" src="./img/AppenzellerBrandloescher_Flasche.png" style="width:50px;">
+		</a>
+		<span class="price"><?php echo $product->price ?></span>
+		<form action="cart.php" method="POST">
+			<input type="hidden" value=<?php echo $product->id ?>>
+			<input type="number" value="amount"></input>
+			<input type="submit">
+		</form>
 	</div>
 <?php } ?>
 </div>

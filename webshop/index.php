@@ -1,7 +1,8 @@
 <?php 
-	include "models/product.php";
-	include "database.php";
+	include "inc/product.inc.php";
 	include "lang.php";
+	
+	session_start();
 	
 	$products = array(
 		new Product("Burgdorfer Helles",3.45,0), 
@@ -9,24 +10,16 @@
 	);
 	
 	$view = isset($_GET["view"]) ? $_GET["view"] : NULL;
-	
-	$username = isset($_COOKIE["username"]) ? $_COOKIE["username"] : NULL;
-	
-	$pdo = Database::connect();
+	$username = isset($_SESSION["username"]) ? $_SESSION["username"] : NULL;
+	$cart = isset($_SESSION["cart"]) ? $_SESSION["cart"] : NULL;
 ?>
 <html>
 	<head>
 		<meta charset="utf-8">
-		<script type="text/javascript">
-			function addToCart(id){
-				window.alert("id: " + id);
-			}
-		</script>
 	</head>
 	<body>
 		<?php
 		include('views/header.php');
-		include('views/login.php');
 		
 		switch($view){
 		case NULL:
@@ -39,12 +32,9 @@
 		case "cart":
 			include('views/cart.php');
 			break;
-		case "logout":
-			setcookie("username","",-1);
-			include('views/logout.php');
-			break;
 		}
 		
+		include('views/sidebar.php');
 		include('views/footer.php')
 		?>
 	</body>
