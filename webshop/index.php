@@ -1,5 +1,5 @@
 <?php 
-	include "inc/product.inc.php";
+	include_once('inc/product.inc.php');
 	include "lang.php";
 	
 	session_start();
@@ -23,8 +23,8 @@
 		case "detail":
 			include('views/product_info.php');
 			break;
-		case "cart":
-			include('views/cart.php');
+		case "checkout":
+			include('form.php');
 			break;
 		}
 		

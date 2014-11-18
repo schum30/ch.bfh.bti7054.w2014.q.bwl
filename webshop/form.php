@@ -69,7 +69,7 @@
             <h2>2. Lieferadresse</h2>
             <input type="radio" name="shippingaddress" value="billingaddress" onclick="lieferadresse()" checked>Gleich wie Rechnungsadresse</input><br />
             <input type="radio" name="shippingaddress" value="shippingaddress" onclick="lieferadresse()">Lieferadresse</input><br />
-            <div id="shippingaddress">
+            <div id="shippingaddress" style="display: none;">
                 Vorname:<input type="text" name="shipping_firstname" /><br /> 
                 Nachname:<input type="text" name="shipping_lastname" /><br /> 
                 Strasse und Hausnummer:<input type="text" name="shipping_address" /><br />

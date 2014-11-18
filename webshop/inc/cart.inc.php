@@ -1,5 +1,5 @@
 <?php
-    include("product.inc.php");
+    include_once('product.inc.php');
     class Cart { 
         private $items = array(); 
 
