@@ -1,7 +1,8 @@
 <header>
 	<ul>
-		<a onClick="javascript:document.cookie='lang=de'" href="">Deutsch</a>
-		<a onClick="javascript:document.cookie='lang=en'" href="">English</a>
+		<li><a onClick="javascript:document.cookie='lang=de'" href="">Deutsch</a></li>
+		<li><a onClick="javascript:document.cookie='lang=en'" href="">English</a></li>
+		<li>Language is <?php echo $_COOKIE["lang"] ?></li>
 	</ul>
 <?php
 switch($username){
