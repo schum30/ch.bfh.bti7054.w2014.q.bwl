@@ -1,7 +1,7 @@
 <div id="products">
 <?php
-$productDB = new ProductDB;
-$products = $productDB->getAllProducts();
+$dbHandler = new DBHandler;
+$products = $dbHandler->getAllProducts();
 foreach ($products as $product) {?>
 	<div class="product" name="<?php echo $product->id ?>">
 		<span class="title"><?php echo $product->name ?></span>

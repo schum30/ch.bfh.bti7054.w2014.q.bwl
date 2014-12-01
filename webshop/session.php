@@ -1,9 +1,14 @@
 <?php
 session_start();
+include('inc/dbHandler.inc.php');
+$dbHandler = new DBHandler();
 $req = $_SERVER['REQUEST_METHOD'];
 if(isset($_GET["login"])){
-	if ($req == 'POST') {
-		$_SESSION["username"] = isset($_POST['username']) ? $_POST['username'] : NULL;
+	if ($req == 'POST' && isset($_POST['username'])) {
+		$user = $dbHandler->getUser($_POST['username']);
+		if(!is_null($user) && ($user->password == $_POST['password'])){
+			$_SESSION["user"] =  $user;
+		}
 	}
 }
 else if(isset($_GET["logout"])){

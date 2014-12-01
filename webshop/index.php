@@ -1,11 +1,11 @@
 <?php 
 	include_once('inc/product.inc.php');
-	include_once('inc/productDB.inc.php');
+	include_once('inc/dbHandler.inc.php');
 	include "lang.php";
 	
 	session_start();
 	$view = isset($_GET["view"]) ? $_GET["view"] : NULL;
-	$username = isset($_SESSION["username"]) ? $_SESSION["username"] : NULL;
+	$user = isset($_SESSION["user"]) ? $_SESSION["user"] : NULL;
 	$cart = isset($_SESSION["cart"]) ? $_SESSION["cart"] : NULL;
 ?>
 <html>

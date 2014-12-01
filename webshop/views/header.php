@@ -5,7 +5,7 @@
 		<li>Language is <?php echo isset($_COOKIE["lang"]) ? $_COOKIE["lang"] : "none" ?></li>
 	</ul>
 <?php
-switch($username){
+switch($user){
 	case NULL:
 ?>
 		<form action="session.php?login" method="post">
@@ -17,7 +17,7 @@ switch($username){
 		break;
 	default:
 ?>
-<h2>Logged in as <?php echo $username ?></h2>
+<h2>Logged in as <?php echo $user->name ?></h2>
 <form action="session.php?logout" method="post">
 	<input type="submit" value="Logout" />
 </form>
