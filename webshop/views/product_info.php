@@ -1,6 +1,7 @@
 <?php 
 $id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-$product = $products[$id];
+$productDB = new ProductDB();
+$product = $productDB->getProduct($id);
 ?>
 <div class="product">
 	<ul>

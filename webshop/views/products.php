@@ -1,9 +1,7 @@
 <div id="products">
 <?php
-$products = array(
-	new Product("Burgdorfer Helles",3.45,0),
-	new Product("Aare Amber",3.50,1)
-);
+$productDB = new ProductDB;
+$products = $productDB->getAllProducts();
 foreach ($products as $product) {?>
 	<div class="product" name="<?php echo $product->id ?>">
 		<span class="title"><?php echo $product->name ?></span>

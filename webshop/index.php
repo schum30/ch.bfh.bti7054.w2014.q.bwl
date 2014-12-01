@@ -1,5 +1,6 @@
 <?php 
 	include_once('inc/product.inc.php');
+	include_once('inc/productDB.inc.php');
 	include "lang.php";
 	
 	session_start();
@@ -24,7 +25,13 @@
 			include('views/product_info.php');
 			break;
 		case "checkout":
-			include('form.php');
+			include('views/checkout.php');
+			break;
+		case "confirm":
+			include('views/confirm.php');
+			break;
+		default:
+			include('views/products.php');
 			break;
 		}
 		
