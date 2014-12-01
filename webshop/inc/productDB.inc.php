@@ -16,18 +16,18 @@ class ProductDB extends mysqli{
 		return new Product($obj->name,$obj->price,$obj->id);
 	}
 	public function deleteProduct($product) {
-		$id = $product->get(id);
+		$id = $product->id;
 		$this->query("DELETE FROM products WHERE ID = $id");
 	}
 	public function insertProduct($product) {
-		$name = $product->get(name);
-		$price = $product->get(price);
+		$name = $product->name;
+		$price = $product->price;
 		$this->query("INSERT products (Name, Price) VALUES ('$name','$price')");
 	}
 	public function updateProduct($product) {
-		$name = $product->get(name);
-		$price = $product->get(price);
-		$id = $product->get(id);
+		$name = $product->name;
+		$price = $product->price;
+		$id = $product->id;
 		$this->query("UPDATE products SET Name='$name',
 			Price='$price' WHERE ID=$id");
 	}
