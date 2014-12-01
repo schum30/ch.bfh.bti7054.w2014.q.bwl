@@ -11,6 +11,7 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		<script type="text/javascript" src="js/form.js"></script>
 	</head>
 	<body>
 		<?php

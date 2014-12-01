@@ -2,7 +2,7 @@
 	<ul>
 		<li><a onClick="javascript:document.cookie='lang=de'" href="">Deutsch</a></li>
 		<li><a onClick="javascript:document.cookie='lang=en'" href="">English</a></li>
-		<li>Language is <?php echo $_COOKIE["lang"] ?></li>
+		<li>Language is <?php echo isset($_COOKIE["lang"]) ? $_COOKIE["lang"] : "none" ?></li>
 	</ul>
 <?php
 switch($username){
