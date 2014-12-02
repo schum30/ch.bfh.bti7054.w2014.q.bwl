@@ -1,14 +1,16 @@
 <?php 
 class Product{
 	
+	private $id;
 	private $name;
 	private $price;
-	private $id;
+	private $imgPath;
 	
 	function __construct($name, $price, $id) {
 		$this->name = $name;
 		$this->price = $price;
 		$this->id = $id;
+		$this->imgPath = "/img/products/" . $id . "_" . $name . ".png";
 	}
 	
 	public function __get($property){
@@ -22,6 +24,5 @@ class Product{
 			$this->$property = $value;
 		}
 	}
-	
 }
 ?>

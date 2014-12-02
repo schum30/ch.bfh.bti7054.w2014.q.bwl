@@ -20,6 +20,11 @@ class DBHandler extends mysqli{
 		$id = $product->id;
 		$this->query("DELETE FROM products WHERE ID = $id");
 	}
+	public function createProduct($name, $price){
+		$this->query("INSERT products (Name, Price) VALUES ('$name','$price')");
+		$id = mysqli_insert_id($this);
+		return $this->getProduct($id);
+	}
 	public function insertProduct($product) {
 		$name = $product->name;
 		$price = $product->price;
@@ -49,6 +54,10 @@ class DBHandler extends mysqli{
 	public function deleteUser($user){
 		$name = $user->name;
 		$this->query("DELETE FROM users WHERE name = '$name'");
+	}
+	public function createUser($name, $password){
+		$this->query("INSERT users (name,password) VALUES ('$name','$password')");
+		return $this->getUser($name);
 	}
 	public function insertUser($user){
 		$name = $user->name;
