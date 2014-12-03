@@ -37,7 +37,7 @@ elseif(isset($_GET['action'])){
 	<?php } ?>
 		<tr>
 			<td><input type="text" name="name" form="insert" /></td>
-			<td><input type="text" name="password" form="insert" /></td>
+			<td><input type="password" name="password" form="insert" /></td>
 			<td><input type="submit" value="insert" form="insert" /></td>
 		</tr>
 	</table>

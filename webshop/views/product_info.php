@@ -3,12 +3,15 @@ $dbHandler = new dbHandler();
 $product = isset($_GET["id"]) ? $dbHandler->getProduct($_GET["id"]) : NULL;
 ?>
 <div class="product">
-	<ul>
-		<li><img src="<?php echo $product->imgPath ?>">
-		<li><?php echo "$expr[name]: $product->name" ?></li>
-		<li><?php echo "$expr[price]: $product->price" ?></li>
-		<li>Amber, süsslich-herb, üppige Karamalznote, mittelkräftig und cremig</li>
-		<li><a href="javascript:addToCart(<?php echo $id ?>)">add to cart!</a></li>
-	</ul>
+	<div class="product" name="<?php echo $product->id ?>">
+		<span class="title"><?php echo $product->name ?></span>
+		<img class="productimage" src="<?php echo $product->imgPath ?>" />
+		<span class="price"><?php echo $product->price ?></span>
+		<form action="cart.php" method="post">
+			<input type="hidden" name="id" value="<?php echo $product->id ?>" />
+			<input type="number" name="amount" />
+			<input type="submit" value="send" />
+		</form>
+	</div>
 	<a href="./index.php">Zurück</a>
 </div>
