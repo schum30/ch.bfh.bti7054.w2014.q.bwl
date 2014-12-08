@@ -11,31 +11,42 @@ class DBHandler extends mysqli{
 			array_push($categories, $category->name);
 		}
 		return $categories;
-	}
-	
+	}	
 	public function getAllProducts() {
 		$products = array();
 		$res = $this->query("SELECT * FROM products");
 		while($product = $res->fetch_object()){
-			$name = $product->
-			array_push($products,new Product($product->name,$product->price,$product->id));
+			$id = $product->id;
+			$name = $product->name;
+			$category = $product->categoryName;
+			$description = $product->description;
+			$manufacturer = $product->manufacturer;
+			$price = $product->price;
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $price));
 		}
 		return $products;
 	}
 	public function getProduct($id){
 		$res = $this->query("SELECT * FROM products WHERE ID = $id");
-		$obj = $res->fetch_object();
-		return new Product($obj->name,$obj->price,$obj->id);
+		$product = $res->fetch_object();
+
+		$id = $product->id;
+		$name = $product->name;
+		$category = $product->categoryName;
+		$description = $product->description;
+		$manufacturer = $product->manufacturer;
+		$price = $product->price;
+		return new Product($id, $name, $category, $description, $manufacturer, $price);
 	}
 	public function deleteProduct($product) {
 		$id = $product->id;
 		$this->query("DELETE FROM products WHERE ID = $id");
 	}
 	public function createProduct($name, $category, $description, $manufacturer, $price){
-		$sql = "INSERT products (name, categoryName, description, manufacturer, price) VALUES ('$name','$category','$description','$manufacturer','$price')"
+		$sql = "INSERT products (name, categoryName, description, manufacturer, price) VALUES ('$name','$category','$description','$manufacturer','$price')";
 		$this->query($sql);
-		/*$id = mysqli_insert_id($this);
-		return $this->getProduct($id);*/
+		$id = mysqli_insert_id($this);
+		return $this->getProduct($id);
 	}
 	public function insertProduct($product) {
 		$name = $product->name;
@@ -53,40 +64,44 @@ class DBHandler extends mysqli{
 		$customers = array();
 		$res = $this->query("SELECT * FROM customers");
 		while($customer = $res->fetch_object()){
-			$address = $this->getAddress($res->addressId);
-			array_push($customers,new Customer($customer->customerName,$customer->customerFirstName,$customer->customerLastName,$customer->phone,$address,"123456"));
+			$address = $this->getAddress($customer->addressId);
+			array_push($customers,new Customer($customer->name,$customer->firstName,$customer->lastName,$customer->phone,$address,$customer->password));
 		}
 		return $customers;
 	}
-	public function getUser($name){
-		$res = $this->query("SELECT * FROM users WHERE name = '$name'");
+	public function getCustomer($name){
+		$res = $this->query("SELECT * FROM customers WHERE name = '$name'");
 		$obj = isset($res) ? $res->fetch_object() : NULL;
-		$user = isset($obj) ? new User($obj->name,$obj->password) : NULL;
-		return $user;
+		$address = $this->getAddress($obj->addressId);
+		$customer = isset($obj) ? new Customer($obj->name, $obj->firstName, $obj->lastName, $obj->phone, $address,$obj->password) : NULL;
+		return $customer;
 	}
-	public function deleteUser($user){
-		$name = $user->name;
-		$this->query("DELETE FROM users WHERE name = '$name'");
+	public function deleteCustomer($customer){
+		$name = $customer->name;
+		$this->query("DELETE FROM customers WHERE name = '$name'");
 	}
 	public function insertCustomer($customer){
-		$name = $customer->name;
-		$firstName = $customer->firstName;
-		$lastName = $customer->lastName;
-		$phone = $customer->phone;
 		$address = $customer->address;
-		
 		$street = $address->street;
 		$plz = $address->plz;
 		$city = $address->city;
 		
-		$this->query("INSERT addresses (street,plz,city) VALUES ('$street','$plz','$city')");
+		echo $sqlAddress = "INSERT addresses (street,plz,city) VALUES ('$street','$plz','$city')";
+		$this->query($sqlAddress);
 		
 		$addressId = mysqli_insert_id($this);
 		
-		$this->query("INSERT users (name, firstName, lastName, phone, addressId) VALUES ('$name','$firstName','$lastName','$phone','$addressId')");
+		$name = $customer->name;
+		$firstName = $customer->firstName;
+		$lastName = $customer->lastName;
+		$phone = $customer->phone;
+		$password = $customer->password;
+		
+		echo $sqlCustomer = "INSERT customers (name, firstName, lastName, phone, addressId, password) VALUES ('$name','$firstName','$lastName','$phone','$addressId', '$password')";
+		$this->query($sqlCustomer);
 	}
 	public function getAddress($id){
-		$this->query("SELECT * FROM addresses WHERE ID = $id");
+		$res = $this->query("SELECT * FROM addresses WHERE ID = $id");
 		$obj = $res->fetch_object();
 		return new Address($obj->street,$obj->plz,$obj->city);
 	}

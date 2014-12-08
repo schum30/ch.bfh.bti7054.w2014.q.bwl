@@ -5,16 +5,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	
 	$name = $_POST['name'];
 	$category = $_POST['category'];
-	$description = $_POST['description'];
 	$manufacturer = $_POST['manufacturer'];
 	$price = $_POST['price'];
 	
-	/*$product = $dbHandler->createProduct($name, $category, $description, $manufacturer, $price);
+	$description = file_get_contents($_FILES['description']['tmp_name']);
 	
-	move_uploaded_file($_FILES["img"]["tmp_name"], "../" . $product->imgPath);*/
+	$product = $dbHandler->createProduct($name, $category, $description, $manufacturer, $price);
 	
-	/*header('HTTP/1.1 303 See Other');
-	header("Location: index.php?view=product");*/
+	move_uploaded_file($_FILES["img"]["tmp_name"], "../" . $product->imgPath);
+	
+	header('HTTP/1.1 303 See Other');
+	header('Location: index.php?view=product');
 
 }
 elseif(isset($_GET['action'])){
@@ -23,7 +24,7 @@ elseif(isset($_GET['action'])){
 	if($action='delete'){
 		$dbHandler->deleteProduct($product);
 		header('HTTP/1.1 303 See Other');
-		header("Location: index.php?view=product");
+		header('Location: index.php?view=product');
 	}
 	/*
 	elseif($action='update'){
@@ -69,7 +70,7 @@ elseif(isset($_GET['action'])){
 				echo "<option>".$category."</option>";
 			}?>
 			</select></td>
-			<td><input type="textarea" name="description" form="insert" required /></td>
+			<td><input type="file" accept=".txt" name="description" form="insert" required /></td>
 			<td><input type="text" name="manufacturer" form="insert" required /></td>
 			<td><input type="number" name="price" step="any" form="insert" required /></td>
 			<td><input type="submit" value="insert" form="insert" /></td>

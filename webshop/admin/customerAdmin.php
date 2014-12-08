@@ -1,27 +1,26 @@
 <?php
 include_once('../inc/dbHandler.inc.php');
+$dbHandler = new DBHandler();
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	$dbHandler = new DBHandler();
 	$address = new Address($_POST['street'],$_POST['plz'],$_POST['city']);
 	$customer = new Customer($_POST['name'],$_POST['firstName'],$_POST['lastName'],$_POST['phone'],$address,$_POST['password']);
 	$dbHandler->insertCustomer($customer);
 	header('HTTP/1.1 303 See Other');
-	header("Location: index.php?view=customer");
+	header('Location: index.php?view=customer');
 }
 elseif(isset($_GET['action'])){
-	$dbHandler = new DBHandler();
 	$action = $_GET['action'];
-	$user = $dbHandler->getUser($_GET['name']);
+	$customer = $dbHandler->getCustomer($_GET['name']);
 	if($action='delete'){
-		$dbHandler->deleteUser($user);
+		$dbHandler->deleteCustomer($customer);
 		header('HTTP/1.1 303 See Other');
-		header("Location: index.php?view=customer");
+		header('Location: index.php?view=customer');
 	}
 }
 ?>
 
 <div id="userAdmin">
-	<form method="POST" id="insert" action="userAdmin.php"></form>
+	<form method="POST" id="insert" action="customerAdmin.php"></form>
 	<table>
 		<tr>
 			<td>name</td>
@@ -45,7 +44,7 @@ elseif(isset($_GET['action'])){
 			<td><?php echo $address->plz ?></td>
 			<td><?php echo $address->city ?></td>
 			<td><?php echo $customer->password ?></td>
-			<td><a href="userAdmin.php?action=delete&name=<?php echo $user->name ?>">delete</a></td>
+			<td><a href="customerAdmin.php?action=delete&name=<?php echo $customer->name ?>">delete</a></td>
 		</tr>
 	<?php } ?>
 		<tr>

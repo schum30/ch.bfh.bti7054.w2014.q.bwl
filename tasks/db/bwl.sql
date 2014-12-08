@@ -1,7 +1,7 @@
 CREATE DATABASE bwl;
 USE bwl;
 CREATE TABLE IF NOT EXISTS `addresses` (
-  `id` int(11) PRIMARY KEY,
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `street` varchar(50) NOT NULL,
   `plz` int(4) NOT NULL,
   `city` varchar(50) NOT NULL,
@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `customers` (
   `lastName` varchar(50) NOT NULL,
   `phone` varchar(50) DEFAULT NULL,
   `addressId` int(11) DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
   FOREIGN KEY (`addressId`) REFERENCES `addresses` (`id`)
 );
 CREATE TABLE IF NOT EXISTS `products` (
@@ -47,3 +48,5 @@ CREATE TABLE IF NOT EXISTS `orderdetails` (
   FOREIGN KEY (`orderId`) REFERENCES `orders` (`id`),
   FOREIGN KEY (`productId`) REFERENCES `products` (`id`)
 );
+
+INSERT categories (name) VALUES ('beer'),('wine'),('liquor');
