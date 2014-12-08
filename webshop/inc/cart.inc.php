@@ -1,7 +1,7 @@
 <?php
     include_once('product.inc.php');
     class Cart { 
-        private $items = array(); 
+        private $items = array();
 
         public function addItem($art, $num) { 
             if (!isset($this->items[$art])) {
@@ -9,7 +9,7 @@
             }
             $this->items[$art] += $num;
         } 
-/*
+
         public function removeItem($art, $num) { 
             if (isset($this->items[$art]) && $this->items[$art] >= $num) { 
                 $this->items[$art] -= $num; 
@@ -24,16 +24,13 @@
         }
 
           
-        public function emtyCart($art, $num) { 
+        public function emptyCart($art, $num) { 
 
         } 
 
         public function calcCart($art, $num) { 
 
-        } 
-
-
-          */
+        }
 
         public function display() { 
             echo "<table border=\"1\">"; 

@@ -1,12 +1,23 @@
 <?php
 include_once('product.inc.php');
-include_once('user.inc.php');
+include_once('customer.inc.php');
+include_once('address.inc.php');
 
 class DBHandler extends mysqli{
+	public function getCategories(){
+		$categories = array();
+		$res = $this->query("SELECT * FROM categories");
+		while($category = $res->fetch_object()){
+			array_push($categories, $category->name);
+		}
+		return $categories;
+	}
+	
 	public function getAllProducts() {
 		$products = array();
 		$res = $this->query("SELECT * FROM products");
 		while($product = $res->fetch_object()){
+			$name = $product->
 			array_push($products,new Product($product->name,$product->price,$product->id));
 		}
 		return $products;
@@ -20,10 +31,11 @@ class DBHandler extends mysqli{
 		$id = $product->id;
 		$this->query("DELETE FROM products WHERE ID = $id");
 	}
-	public function createProduct($name, $price){
-		$this->query("INSERT products (Name, Price) VALUES ('$name','$price')");
-		$id = mysqli_insert_id($this);
-		return $this->getProduct($id);
+	public function createProduct($name, $category, $description, $manufacturer, $price){
+		$sql = "INSERT products (name, categoryName, description, manufacturer, price) VALUES ('$name','$category','$description','$manufacturer','$price')"
+		$this->query($sql);
+		/*$id = mysqli_insert_id($this);
+		return $this->getProduct($id);*/
 	}
 	public function insertProduct($product) {
 		$name = $product->name;
@@ -37,13 +49,14 @@ class DBHandler extends mysqli{
 		$this->query("UPDATE products SET Name='$name',
 			Price='$price' WHERE ID=$id");
 	}
-	public function getAllUsers(){
-		$users = array();
-		$res = $this->query("SELECT * FROM users");
-		while($user = $res->fetch_object()){
-			array_push($users,new User($user->name,$user->password));
+	public function getAllCustomers(){
+		$customers = array();
+		$res = $this->query("SELECT * FROM customers");
+		while($customer = $res->fetch_object()){
+			$address = $this->getAddress($res->addressId);
+			array_push($customers,new Customer($customer->customerName,$customer->customerFirstName,$customer->customerLastName,$customer->phone,$address,"123456"));
 		}
-		return $users;
+		return $customers;
 	}
 	public function getUser($name){
 		$res = $this->query("SELECT * FROM users WHERE name = '$name'");
@@ -55,14 +68,27 @@ class DBHandler extends mysqli{
 		$name = $user->name;
 		$this->query("DELETE FROM users WHERE name = '$name'");
 	}
-	public function createUser($name, $password){
-		$this->query("INSERT users (name,password) VALUES ('$name','$password')");
-		return $this->getUser($name);
+	public function insertCustomer($customer){
+		$name = $customer->name;
+		$firstName = $customer->firstName;
+		$lastName = $customer->lastName;
+		$phone = $customer->phone;
+		$address = $customer->address;
+		
+		$street = $address->street;
+		$plz = $address->plz;
+		$city = $address->city;
+		
+		$this->query("INSERT addresses (street,plz,city) VALUES ('$street','$plz','$city')");
+		
+		$addressId = mysqli_insert_id($this);
+		
+		$this->query("INSERT users (name, firstName, lastName, phone, addressId) VALUES ('$name','$firstName','$lastName','$phone','$addressId')");
 	}
-	public function insertUser($user){
-		$name = $user->name;
-		$password = $user->password;
-		$this->query("INSERT users (name,password) VALUES ('$name','$password')");
+	public function getAddress($id){
+		$this->query("SELECT * FROM addresses WHERE ID = $id");
+		$obj = $res->fetch_object();
+		return new Address($obj->street,$obj->plz,$obj->city);
 	}
 	function __construct() {
 		parent::__construct("localhost", "root", "");

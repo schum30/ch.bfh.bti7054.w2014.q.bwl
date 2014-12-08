@@ -10,15 +10,15 @@ $dbHandler = new DBHandler();
 	<body>
 		<ul>
 			<li><a href=<?php $_PHP_SELF ?>?view=product>products</a></li>
-			<li><a href=<?php $_PHP_SELF ?>?view=user>users</a></li>
+			<li><a href=<?php $_PHP_SELF ?>?view=customer>customer</a></li>
 		</ul>
 		<?php
 		switch($view){
 			case 'product':
 				include('productAdmin.php');
 				break;
-			case 'user':
-				include('userAdmin.php');
+			case 'customer':
+				include('customerAdmin.php');
 				break;
 		}
 		?>

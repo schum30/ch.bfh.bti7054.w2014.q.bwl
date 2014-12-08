@@ -1,11 +1,21 @@
 <?php
-class User{
+include_once('address.inc.php');
+
+class Customer{
 	
 	private $name;
+	private $firstName;
+	private $lastName;
+	private $phone;
+	private $address;
 	private $password;
 	
-	function __construct($name, $password) {
+	function __construct($name, $firstName, $lastName, $phone, $address,$password) {
 		$this->name = $name;
+		$this->firstName = $firstName;
+		$this->lastName = $lastName;
+		$this->phone = $phone;
+		$this->address = $address;
 		$this->password = $password;
 	}
 	
