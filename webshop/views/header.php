@@ -22,4 +22,7 @@ switch($user){
 	<input type="submit" value="Logout" />
 </form>
 <?php } ?>
+<?php foreach($dbHandler->getCategories() as $category){
+	echo "<a href=\"$_SERVER[PHP_SELF]?category=$category\">$category</a> ";
+}?>
 </header>

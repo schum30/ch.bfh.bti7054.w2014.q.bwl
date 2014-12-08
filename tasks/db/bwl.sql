@@ -50,3 +50,11 @@ CREATE TABLE IF NOT EXISTS `orderdetails` (
 );
 
 INSERT categories (name) VALUES ('beer'),('wine'),('liquor');
+INSERT INTO `addresses` (`id`, `street`, `plz`, `city`) VALUES
+(5, 'M', 1234, 'Musterstadt');
+INSERT INTO `customers` (`name`, `firstName`, `lastName`, `phone`, `addressId`, `password`) VALUES
+('hm', 'Hans', 'Meier', '034 445 53 06', 5, 'password');
+INSERT INTO `products` (`id`, `name`, `categoryName`, `manufacturer`, `description`, `price`) VALUES
+(3, 'Bündner Röteli', 'liquor', 'Kindschi Söhne AG', 'ist ein naturreiner Likör mit 22 %vol. Alkohol. Getrocknete Kirschen werden zusammen mit einer natürlichen Gewürzmischung über eine längere Zeit in Kernobstbrand eingelegt. Nach der nötigen Reifezeit erfolgt die Fertigfabrikation, unter Beigabe von Kirschsaft und diversen Aromen. (z.B. Zimt, Vanille und Nelken). ', 29.95),
+(4, 'Amber', 'beer', 'Aare Bier', 'Rotkupfer, Caramel, Bisquit, blumig, schöne Malzigkeit, frisch mit Charakter', 5.5),
+(5, 'Rouvinez Fendant De Sierre', 'wine', 'Rouvinez', 'Frische Frucht mit Zitrus- und Blumennoten, rund und bekömmlich, angenehme Säure, süffig. Als Apéro, perfekt zu Fondue oder Käsespezialitäten.', 50);

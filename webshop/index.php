@@ -7,6 +7,7 @@
 	$view = isset($_GET["view"]) ? $_GET["view"] : NULL;
 	$user = isset($_SESSION["user"]) ? $_SESSION["user"] : NULL;
 	$cart = isset($_SESSION["cart"]) ? $_SESSION["cart"] : NULL;
+	$dbHandler = new DBHandler;
 ?>
 <html>
 	<head>

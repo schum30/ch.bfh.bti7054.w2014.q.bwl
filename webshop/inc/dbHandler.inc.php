@@ -11,7 +11,21 @@ class DBHandler extends mysqli{
 			array_push($categories, $category->name);
 		}
 		return $categories;
-	}	
+	}
+	public function getProductsFromCategory($category){
+		$products = array();
+		$res = $this->query("SELECT * FROM products WHERE categoryName = '$category'");
+		while($product = $res->fetch_object()){
+			$id = $product->id;
+			$name = $product->name;
+			$category = $product->categoryName;
+			$description = $product->description;
+			$manufacturer = $product->manufacturer;
+			$price = $product->price;
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $price));
+		}
+		return $products;
+	}
 	public function getAllProducts() {
 		$products = array();
 		$res = $this->query("SELECT * FROM products");
