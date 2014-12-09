@@ -12,7 +12,7 @@ class DBHandler extends mysqli{
 		}
 		return $categories;
 	}
-	public function getProductsFromCategory($category){
+	public function getProductsByCategory($category){
 		$products = array();
 		$res = $this->query("SELECT * FROM products WHERE categoryName = '$category'");
 		while($product = $res->fetch_object()){

@@ -3,7 +3,7 @@ $dbHandler = new dbHandler();
 $product = isset($_GET["id"]) ? $dbHandler->getProduct($_GET["id"]) : NULL;
 
 $base = "./index.php";
-$query = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY);
+$query = isset($_SERVER['HTTP_REFERER']) ? parse_url($_SERVER['HTTP_REFERER'], PHP_URL_QUERY) : NULL;
 $href = is_null($query) ? $base : $base . "?" . $query;
 ?>
 <div class="product">
