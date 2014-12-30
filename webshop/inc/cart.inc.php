@@ -32,12 +32,14 @@
 
         }
 
-        public function display() { 
-            echo "<table border=\"1\">"; 
-            echo "<tr><th>Article</th><th>Items</th></tr>"; 
-            foreach ($this->items as $art=>$num) 
-                echo "<tr><td>$art</td><td>$num</td></tr>"; 
-            echo "</table>"; 
-        } 
+		public function display() { 
+			$ret = '<table border=\"1\">'; 
+			$ret .= '<tr><th>Article</th><th>Items</th></tr>'; 
+			foreach ($this->items as $art=>$num){
+				$ret .= '<tr><td>' . $art . '</td><td>' . $num . '</td></tr>';
+			}
+			$ret .= '</table>';
+			return $ret;
+		} 
     } 
 ?>

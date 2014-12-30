@@ -26,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `products` (
   `manufacturer` varchar(80) NOT NULL,
   `description` text,
   `price` double NOT NULL,
-  FOREIGN KEY (`categoryName`) REFERENCES `categories` (`name`)
+  FOREIGN KEY (`categoryName`) REFERENCES `categories` (`name`),
+  FULLTEXT (name,manufacturer,description)
 );
 CREATE TABLE IF NOT EXISTS `orderstatuses` (
   `status` varchar(15) PRIMARY KEY

@@ -5,10 +5,7 @@ $dbHandler = new DBHandler();
 $req = $_SERVER['REQUEST_METHOD'];
 if(isset($_GET["login"])){
 	if ($req == 'POST' && isset($_POST['username'])) {
-		$user = $dbHandler->getUser($_POST['username']);
-		if(!is_null($user) && ($user->password == $_POST['password'])){
-			$_SESSION["user"] =  $user;
-		}
+		$_SESSION["user"] = $user;
 	}
 }
 else if(isset($_GET["logout"])){
@@ -19,5 +16,5 @@ else if(isset($_GET["logout"])){
 	}
 }
 header('HTTP/1.1 303 See Other');
-header("Location: $_SERVER[HTTP_REFERER]");
+header('Location: ' . $_SERVER['HTTP_REFERER']);
 ?>

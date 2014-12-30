@@ -43,14 +43,32 @@ class DBHandler extends mysqli{
 	public function getProduct($id){
 		$res = $this->query("SELECT * FROM products WHERE ID = $id");
 		$product = $res->fetch_object();
-
-		$id = $product->id;
-		$name = $product->name;
-		$category = $product->categoryName;
-		$description = $product->description;
-		$manufacturer = $product->manufacturer;
-		$price = $product->price;
-		return new Product($id, $name, $category, $description, $manufacturer, $price);
+		
+		if (mysqli_num_rows($res) > 0){
+			$id = $product->id;
+			$name = $product->name;
+			$category = $product->categoryName;
+			$description = $product->description;
+			$manufacturer = $product->manufacturer;
+			$price = $product->price;
+			return new Product($id, $name, $category, $description, $manufacturer, $price);
+		}
+	}
+	public function getProductsSearch($query){
+		$products = array();
+		$res = $this->query("SELECT * FROM products WHERE MATCH (name,manufacturer,description) AGAINST ('*$query*' IN BOOLEAN MODE);");
+		
+		while($product = $res->fetch_object()){
+			$id = $product->id;
+			$name = $product->name;
+			$category = $product->categoryName;
+			$description = $product->description;
+			$manufacturer = $product->manufacturer;
+			$price = $product->price;
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $price));
+		}
+		
+		return $products;
 	}
 	public function deleteProduct($product) {
 		$id = $product->id;
