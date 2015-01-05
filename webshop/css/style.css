@@ -49,24 +49,27 @@
 	padding: 0;
 	display: table;
 	margin: 0 auto;
-	float: left;
-	margin-left: 20px;
+	float: right;
 }
 
 #header ol#navigation li {
-	background: yellow;
+	background: red;
 	float: left;
 	margin: 0 1px 0 0;
 	padding-left: 10px;
+	padding-right: 10px;
 }
 
-#header ol#navigation a {
+#header ol#navigation li a {
 	background: url(tabs.gif) 100% 0;
 	color: #008;
 	float: left;
 	line-height: 2em;
-	padding-right: 10px;
 	text-decoration: none;
+}
+
+#header ol#navigation li.active {
+	background: yellow;
 }
 
 #content{

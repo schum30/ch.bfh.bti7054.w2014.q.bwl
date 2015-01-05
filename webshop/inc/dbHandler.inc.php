@@ -14,7 +14,10 @@ class DBHandler extends mysqli{
 	}
 	public function getProductsByCategory($category){
 		$products = array();
-		$res = $this->query("SELECT * FROM products WHERE categoryName = '$category'");
+		$stmt = $this->prepare('SELECT * FROM products WHERE categoryName = ?;');
+		$stmt->bind_param('s', $category);
+		$stmt->execute();
+		$res = $stmt->get_result();
 		while($product = $res->fetch_object()){
 			$id = $product->id;
 			$name = $product->name;
@@ -28,7 +31,7 @@ class DBHandler extends mysqli{
 	}
 	public function getAllProducts() {
 		$products = array();
-		$res = $this->query("SELECT * FROM products");
+		$res = $this->query('SELECT * FROM products;');
 		while($product = $res->fetch_object()){
 			$id = $product->id;
 			$name = $product->name;
@@ -41,7 +44,10 @@ class DBHandler extends mysqli{
 		return $products;
 	}
 	public function getProduct($id){
-		$res = $this->query("SELECT * FROM products WHERE ID = $id");
+		$stmt = $this->prepare('SELECT * FROM products WHERE ID = ?;');
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$res = $stmt->get_result();
 		$product = $res->fetch_object();
 		
 		if (mysqli_num_rows($res) > 0){
@@ -57,7 +63,6 @@ class DBHandler extends mysqli{
 	public function getProductsSearch($query){
 		$products = array();
 		$res = $this->query("SELECT * FROM products WHERE MATCH (name,manufacturer,description) AGAINST ('*$query*' IN BOOLEAN MODE);");
-		
 		while($product = $res->fetch_object()){
 			$id = $product->id;
 			$name = $product->name;
@@ -72,18 +77,16 @@ class DBHandler extends mysqli{
 	}
 	public function deleteProduct($product) {
 		$id = $product->id;
-		$this->query("DELETE FROM products WHERE ID = $id");
+		$stmt = $this->prepare('DELETE FROM products WHERE ID = ?;');
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
 	}
 	public function createProduct($name, $category, $description, $manufacturer, $price){
-		$sql = "INSERT products (name, categoryName, description, manufacturer, price) VALUES ('$name','$category','$description','$manufacturer','$price')";
-		$this->query($sql);
+		$stmt = $this->prepare("INSERT products (name, categoryName, description, manufacturer, price) VALUES ('?','?','?','?','?')");
+		$stmt->bind_param('ssssd', $name, $category, $description, $manufacturer, $price);
+		$stmt->execute();
 		$id = mysqli_insert_id($this);
 		return $this->getProduct($id);
-	}
-	public function insertProduct($product) {
-		$name = $product->name;
-		$price = $product->price;
-		$this->query("INSERT products (Name, Price) VALUES ('$name','$price')");
 	}
 	public function updateProduct($product) {
 		$name = $product->name;
@@ -102,7 +105,10 @@ class DBHandler extends mysqli{
 		return $customers;
 	}
 	public function getCustomer($name){
-		$res = $this->query("SELECT * FROM customers WHERE name = '$name'");
+		$stmt = $this->prepare("SELECT * FROM customers WHERE name = '?'");
+		$stmt->bind_param('s', $name);
+		$stmt->execute();
+		$res = $stmt->get_result();
 		$obj = isset($res) ? $res->fetch_object() : NULL;
 		$address = $this->getAddress($obj->addressId);
 		$customer = isset($obj) ? new Customer($obj->name, $obj->firstName, $obj->lastName, $obj->phone, $address,$obj->password) : NULL;
@@ -139,6 +145,7 @@ class DBHandler extends mysqli{
 	}
 	function __construct() {
 		parent::__construct("localhost", "root", "");
+		parent::set_charset("utf8");
 		parent::select_db("bwl");
 	}
 }

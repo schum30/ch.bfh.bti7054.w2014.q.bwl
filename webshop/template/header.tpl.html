@@ -1,0 +1,17 @@
+<body>
+<div id="header">
+	<a href="./index.php">
+		<img id="logo" src="./img/color_logo.jpg" />
+	</a>
+	<div id="login">
+		@login@
+	</div>
+	<form id="search" method="get" action="./index.php">
+		<input type="hidden" name="view" value="search">
+		<input type="text" class="searchBox" name="query">
+		<input type="submit" class="submitButton" value="search">
+	</form>
+	<ol id="navigation">
+		@categories@
+	</ol>
+</div>
