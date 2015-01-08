@@ -16,7 +16,7 @@ class Product{
 		$this->manufacturer = $manufacturer;
 		$this->price = $price;
 		$this->id = $id;
-		$this->imgPath = "/img/products/" . $id . "_" . $name . ".png";
+		$this->imgPath = "./img/products/" . $id . "_" . $name . ".png";
 	}
 	
 	public function __get($property){
