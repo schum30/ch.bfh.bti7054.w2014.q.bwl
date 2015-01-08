@@ -75,4 +75,4 @@ INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `descriptio
 (17,'Roter Sauser','wine','Kellerei Stadium','Das Traubenerzeugnis mit Biss aus Hallau.Zweistern Stadium, herrlich prickelnd. Passt zu Wild, Braten, Marroni oder einfach so als Herbstgruss.',50),
 (18,'Pinot Noir Wintersinger','wine','Siebe Dupf','Funkelnde lachsrosa Farbe, kräftige Aromen von roten Beeren, angenehm körperreicher Rosé, ein Hauch Zitrus. Als Apéro, zu Gemüse oder einfach so.',50),
 (19,'Akkurat Rot','wine','Staatskellerei Zürich','Aroma von reifen Beeren, würzig und reich, samtige Tanninstruktur mit fruchtiger Fülle, langer beeriger Abgang. Zu kalten Platten, Geflügel, Käse oder einfach so.',50),
-(20,'Totinger Blauburgunder','wine','Luzerner Weine','Angenehme, fruchtige Nase, frisches Beeren- und Säurespiel, harmonisch, elegant ausklingend. Zu kalten Platten, leichten Hauptgerichten, Geflügel oder Käse.',50);
+(20,'Tottinger Blauburgunder','wine','Luzerner Weine','Angenehme, fruchtige Nase, frisches Beeren- und Säurespiel, harmonisch, elegant ausklingend. Zu kalten Platten, leichten Hauptgerichten, Geflügel oder Käse.',50);
