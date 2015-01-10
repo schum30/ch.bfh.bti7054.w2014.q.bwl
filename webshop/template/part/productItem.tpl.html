@@ -1,0 +1,12 @@
+<div class="product" name="@id@">
+	<span class="title">@name@</span>
+	<a href=./index.php?view=product&id=@id@>
+		<img class="productimage" src="@imgPath@" style="width:50px;">
+	</a>
+	<span class="price">@price@</span>
+	<form action="cart.php" method="post">
+		<input type="hidden" name="id" value="@id@" />
+		<input type="number" name="amount" />
+		<input type="submit" value="send" />
+	</form>
+</div>

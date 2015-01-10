@@ -104,15 +104,23 @@ class DBHandler extends mysqli{
 		}
 		return $customers;
 	}
-	public function getCustomer($name){
-		$stmt = $this->prepare("SELECT * FROM customers WHERE name = '?'");
-		$stmt->bind_param('s', $name);
+	public function getCustomer($name, $password){
+		$query = 'SELECT * FROM customers WHERE name = ? AND password = ?';
+		$stmt = $this->prepare($query);
+		
+		$stmt->bind_param('ss', $name, $password);
+		
 		$stmt->execute();
-		$res = $stmt->get_result();
-		$obj = isset($res) ? $res->fetch_object() : NULL;
-		$address = $this->getAddress($obj->addressId);
-		$customer = isset($obj) ? new Customer($obj->name, $obj->firstName, $obj->lastName, $obj->phone, $address,$obj->password) : NULL;
-		return $customer;
+		
+		$result = $stmt->get_result();
+		if($result->num_rows == 1){
+			$row = $result->fetch_array();
+			$address = $this->getAddress($row['addressId']);
+			$customer = new Customer($row['name'], $row['firstName'], $row['lastName'], $row['phone'], $address, $row['password']);
+			return $customer;
+		}
+		
+		$stmt->close();
 	}
 	public function deleteCustomer($customer){
 		$name = $customer->name;
@@ -142,6 +150,36 @@ class DBHandler extends mysqli{
 		$res = $this->query("SELECT * FROM addresses WHERE ID = $id");
 		$obj = $res->fetch_object();
 		return new Address($obj->street,$obj->plz,$obj->city);
+	}
+	public function createOrder(&$cart, &$customer){
+		$query = "INSERT orders (customerName, date, status) VALUES (?, NOW(), 'open')";
+		$stmt = $this->prepare($query);
+		
+		$customerName = $customer->name;
+		$stmt->bind_param('s', $customerName);
+		
+		$stmt->execute();
+		
+		$stmt->close();
+		$this->createOrderDetails($cart);
+	}
+	private function createOrderDetails(&$cart){
+		$items = $cart->getItems();
+		
+		$query = "INSERT orderdetails (orderId, productId, amountOrdered, priceEach) VALUE (?, ?, ?, ?)";
+		$stmt = $this->prepare($query);
+		
+		$orderId = $this->insert_id;
+		
+		foreach($items as $product){
+			$productId = $product->id;
+			$amountOrdered = $items[$product];
+			$priceEach = $product->price;
+			$stmt->bind_param('iiid',$orderId, $productId, $amountOrdered, $priceEach);
+			
+			$stmt->execute();
+		}
+		$stmt->close();
 	}
 	function __construct() {
 		parent::__construct("localhost", "root", "");

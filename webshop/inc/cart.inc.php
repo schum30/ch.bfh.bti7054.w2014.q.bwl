@@ -12,7 +12,7 @@ class Cart {
 
 		public function removeItem($art, $num) { 
 			if (isset($this->items[$art]) && $this->items[$art] >= $num) { 
-				$this->items[$art] -= $num; 
+				$this->items[$art] -= $num;
 				if ($this->items[$art] == 0) {
 					unset($this->items[$art]);
 				}

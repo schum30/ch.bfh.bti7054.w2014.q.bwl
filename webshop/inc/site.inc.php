@@ -9,14 +9,15 @@ class Site {
 		$this->dbHandler = new DBHandler();
 	}
 	
-	public function getLogin($user){
-		switch($user){
+	public function getLogin($customer){
+		switch($customer){
 			case NULL:
-				$ret = '<form action="login.php" method="post">';
-				$ret .= '	Username: <input type="text" name="name" /><br />';
+				$ret = '<form name="login" id="login" action="login.php" onsubmit="return validateLoginForm()" method="post">';
+				$ret .= '	Username: <input type="text" name="username" /><br />';
 				$ret .= '	Password: <input type="password" name="password" /><br />';
 				$ret .= '	<input type="submit" value="Anmelden" />';
 				$ret .= '</form>';
+				$ret .= 'or <a href="./index.php?view=register">register</a>';
 				break;
 			default:
 				$ret = '<h2>Logged in</h2>';
@@ -57,6 +58,9 @@ class Site {
 			$ret .= '<a href="' . $_SERVER['PHP_SELF'] . '?view=category&id=' . $category . '">' . $category . '</a>';
 			$ret .= '</li>';
 		}
+		$ret .= '<li>';
+		$ret .= '<a href="' . $_SERVER['PHP_SELF'] . '?view=account">Mein Konto</a>';
+		$ret .= '</li>';
 		return $ret;
 	}
 	
@@ -213,34 +217,33 @@ class Site {
 		return '<h1>This page was lost or never existed</h1>';
 	}
 	
-	public function getSidebar(){
-		if(isset($_SESSION["cart"])){
-			/*
-			$cart = unserialize($_SESSION["cart"]);
-			$cart.display();
-			*/
-			$ret = unserialize($_SESSION["cart"])->display();
-			$ret .= '<a href=./index.php?view=checkout>Checkout</a>';
-			return $ret;
-		}
-		else{
-			return "The cart is empty";
-		}
-	}
-	
 	public function getCart(){
 		if(isset($_SESSION["cart"])){
-			/*
-			$cart = unserialize($_SESSION["cart"]);
-			$cart.display();
-			*/
-			$ret = unserialize($_SESSION["cart"])->display();
-			$ret .= '<a href=./index.php?view=checkout>Checkout</a>';
-			return $ret;
+			$items = unserialize($_SESSION['cart'])->getItems();
+			if($items->count() >= 1){
+				$content = '<div id="cart">';
+				$content .= '<table border=\"1\">';
+				$content .= '<tr><th>Article</th><th>Items</th><th></th></tr>';
+				
+				foreach($items as $product){
+					$content .= '<tr id=' . $product->id . '>';
+					$content .= '<td>' . $product->name . '</td>';
+					$content .= '<td><a href="javascript:void(0);" onclick="addItemToCart(' . $product->id . ')">+</a>/<a href="javascript:void(0);" onclick="removeItemFromCart(' . $product->id . ')">-</a></td>';
+					$content .= '<td>' . $items[$product] . 'x' . $product->price . '</td>';
+					$content .= '</tr>';
+				}
+				
+				$content .= '</table>';
+				$content .= '<a href=./index.php?view=checkout>Checkout</a>';
+				$content .= '</div>';
+			} else {
+				$content = 'The cart is empty';
+			}
 		}
 		else{
-			return "The cart is empty";
+			$content = 'The cart is empty';
 		}
+		return $content;
 	}
 	
 	public function getFooter(){

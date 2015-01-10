@@ -17,7 +17,7 @@ $TEMPLATE_EXTENSION = ".tpl.html";
 
 $view = isset($_GET["view"]) ? $_GET["view"] : NULL;
 $category = $view == "category" && isset($_GET["id"]) ? $_GET["id"] : NULL;
-$user = isset($_SESSION['user']) ? $_SESSION['user'] : NULL;
+$customer = isset($_SESSION['customer']) ? $_SESSION['customer'] : NULL;
 switch($view){
 	case NULL:
 	case "products":
@@ -40,11 +40,27 @@ switch($view){
 		fill_template($templateContent, "product", $site->getProduct($id));
 		break;
 	case "checkout":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentCheckout" . $TEMPLATE_EXTENSION);
+		if($_SESSION['customer'] != null){
+			$address = $customer->address;
+			$templateContent = file_get_contents($TEMPLATE_PATH . "contentCheckout" . $TEMPLATE_EXTENSION);
+			fill_template($templateContent, 'firstName', $customer->firstName);
+			fill_template($templateContent, 'lastName', $customer->lastName);
+			fill_template($templateContent, 'street', $address->street);
+			fill_template($templateContent, 'plz', $address->plz);
+			fill_template($templateContent, 'city', $address->city);
+		} else {
+			$templateContent = '<div id="content">login first to order</div>';
+		}
 		break;
 	case "confirm":
 		$templateContent = file_get_contents($TEMPLATE_PATH . "contentConfirm" . $TEMPLATE_EXTENSION);
+		fill_template($templateContent, 'cart', $site->getCart());
+		fill_template($templateContent, 'options', $_SESSION['paymentmethod']);
 		break;
+	case "register":
+		$templateContent = file_get_contents($TEMPLATE_PATH . "contentRegister" . $TEMPLATE_EXTENSION);
+		break;
+	case "account";
 	default:
 		$templateContent = file_get_contents($TEMPLATE_PATH . "content404" . $TEMPLATE_EXTENSION);
 		break;
@@ -54,7 +70,7 @@ $templateHeader = file_get_contents($TEMPLATE_PATH . "header" . $TEMPLATE_EXTENS
 $templateSidebar = file_get_contents($TEMPLATE_PATH . "sidebar" . $TEMPLATE_EXTENSION);
 $templateFooter = file_get_contents($TEMPLATE_PATH . "footer" . $TEMPLATE_EXTENSION);
 
-fill_template($templateHeader, "login", $site->getLogin($user));
+fill_template($templateHeader, "login", $site->getLogin($customer));
 fill_template($templateHeader, "categories", $site->getCategories($category));
 fill_template($templateSidebar, "cart", $site->getCart());
 fill_template($templateFooter, "footer", $site->getFooter());

@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `orderstatuses` (
   `status` varchar(15) PRIMARY KEY
 );
 CREATE TABLE IF NOT EXISTS `orders` (
-  `id` int(11) PRIMARY KEY,
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
   `customerName` varchar(50) DEFAULT NULL,
   `date` datetime DEFAULT NULL,
   `status` varchar(15) DEFAULT NULL,

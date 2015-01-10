@@ -6,9 +6,9 @@
 	<div id="login">
 		@login@
 	</div>
-	<form id="search" method="get" action="./index.php">
+	<form name="search" id="search" method="get" action="./index.php">
 		<input type="hidden" name="view" value="search">
-		<input type="text" class="searchBox" name="query">
+		<input type="text" class="searchBox" name="query" onkeyup="showResult(this.value)">
 		<input type="submit" class="submitButton" value="search">
 	</form>
 	<ol id="navigation">
