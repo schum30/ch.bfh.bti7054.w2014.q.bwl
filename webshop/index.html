@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/smallLayout.css" media="screen and (max-width:500px)">
+		<link rel="stylesheet" type="text/css" href="css/largeLayout.css" media="screen and (min-width:501px)">
+		<script language="javascript" type="text/javascript" src="./js/scriptscrollListener.js"></script>
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />		
+		<title>Beer Wine Liquor</title>
+	</head>
+	<body class="show-basket">
+		<div class="input-blocker" id="input-blocker">
+				<div class="alert-pop-up">
+					<h1 id="alert-pop-up-title"></h1>
+					<p id="alert-pop-up-text"></p>
+					<a href="#" onclick="hidePopUpAlert();return false;">Close</a>
+				</div>
+				<div class="login-pop-up clearfix">
+					<h1>Login</h1>
+					<form>
+						<input name="username" type="text" size="12" maxlength="12" value="  Benutzername..." 
+							onfocus="if (this.value == '  Benutzername...')
+							{this.value = '';}" onblur="if (this.value == '')
+							{this.value = '  Benutzername...';}" >
+						<input name="password" type="password" size="12" maxlength="12">
+						<a href="#" onclick="hidePopUpLogin();return false;">Login</a>
+						<a href="#" onclick="hidePopUpLogin();return false;">Close</a>
+					</form>
+				</div>
+		</div>
+		<div id="wrapper" class="wrapper">
+			<div id="header" class="header">
+				<img class="logo-large" src="img/logo_large.png" alt="BWL Logo"> 
+			</div>
+			<div id="navigation" class="navigation">
+				<ul>
+					<li><a class="selected" href="#">Beer</a></li>
+					<li><a href="#" onclick="showPopUpAlert('WOOOOW', 'Du kannst auf Wine klicken!');return false;">Wine</a></li>
+					<li><a href="#" onclick="showPopUpAlert('Uppppiiii!', 'Du kannst auf Schnaps klicken!');return false;">Liquor</a></li>
+					<li><a href="#" onclick="showPopUpLogin();return false;">Login</a></li>
+				</ul>
+				
+				<img class="logo-small" src="img/logo_small.png" alt="BWL Logo"> 
+				<div class="top-of-content"></div>
+			</div>
+			
+			<div id="content" class="content">
+				<div id="basket" class="basket">
+					<form class="search-form" action="" method="post">
+						<input class="search-field" type="text" 
+							value="Suchwort eingeben..." 
+							onfocus="if (this.value == 'Suchwort eingeben...')
+							{this.value = '';}" onblur="if (this.value == '')
+							{this.value = 'Suchwort eingeben...';}" />
+						<input class="search-button" type="submit" value="Suchen" />
+					</form>
+					
+					<h1>Ihre Einkäufe:</h1>
+					 <table border="1" style="width:100%">
+					  <tr>
+						<td>Adler Bräu Bügelspez</td>
+						<td>
+							<a class="amount-picker" href="#" >+</a>
+							<a class="amount-picker" href="#" >-</a>
+						</td>
+						<td>2x10.-</td>
+						<td>20.-</td>
+					  </tr>
+					  <tr>
+						<td>Nuttendiesel</td>
+						<td>
+							<a class="amount-picker" href="#" >+</a>
+							<a class="amount-picker" href="#" >-</a>
+						</td>
+						<td>1x36.-</td>
+						<td>36.-</td>
+					  </tr>
+					  <tr>
+						<td></td>
+						<td></td>
+						<td>Total:</td>
+						<td>56.-</td>
+					  </tr>
+					</table> 
+					<a href="#" >Zur Kasse</a>
+				</div>
+				<div class="products clearfix">
+					<div class="product">
+						<img src="img/dummy.jpg" alt="BWL Logo"> 
+						<h1>Hendrick's Gin</h1>
+						<p class="clearfix">Einmalig und unverkennbar in der stylishen, kultigen Apothekerflasche aus viktorianischer Zeit wird Hendrick’s mit 100 % Handarbeit produziert.</p>
+						<form>
+							<select>
+								<option value="70ml">70 cl</option>
+								<option value="100ml">100 cl</option>
+							</select>
+							<input type="number" min="1" max="101" step="1" value="1" name="amount">
+							<a href="#" onclick="form.submit(); return false;">Add</a>
+						</form>
+					</div>
+					<div class="product">
+						<img src="img/dummy.jpg" alt="BWL Logo"> 
+						<h1>Hendrick's Gin</h1>
+						<p class="clearfix">Einmalig und unverkennbar in der stylishen, kultigen Apothekerflasche aus viktorianischer Zeit wird Hendrick’s mit 100 % Handarbeit produziert.</p>
+						<form>
+							<select>
+								<option value="70ml">70 cl</option>
+								<option value="100ml">100 cl</option>
+							</select>
+							<input type="number" min="1" max="101" step="1" value="1" name="amount">
+							<a href="#" onclick="form.submit(); return false;">Add</a>
+						</form>
+					</div>
+					<div class="product">
+						<img src="img/dummy.jpg" alt="BWL Logo"> 
+						<h1>Hendrick's Gin</h1>
+						<p class="clearfix">Einmalig und unverkennbar in der stylishen, kultigen Apothekerflasche aus viktorianischer Zeit wird Hendrick’s mit 100 % Handarbeit produziert.</p>
+						<form>
+							<select>
+								<option value="70ml">70 cl</option>
+								<option value="100ml">100 cl</option>
+							</select>
+							<input type="number" min="1" max="101" step="1" value="1" name="amount">
+							<a href="#" onclick="form.submit(); return false;">Add</a>
+						</form>
+					</div>
+					<div class="product">
+						<img src="img/dummy.jpg" alt="BWL Logo"> 
+						<h1>Hendrick's Gin</h1>
+						<p class="clearfix">Einmalig und unverkennbar in der stylishen, kultigen Apothekerflasche aus viktorianischer Zeit wird Hendrick’s mit 100 % Handarbeit produziert.</p>
+						<form>
+							<select>
+								<option value="70ml">70 cl</option>
+								<option value="100ml">100 cl</option>
+							</select>
+							<input type="number" min="1" max="101" step="1" value="1" name="amount">
+							<a href="#" onclick="form.submit(); return false;">Add</a>
+						</form>
+					</div>
+					<div class="clearfix"></div>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta justo in tellus porttitor non placerat dui pulvinar. Aliquam erat volutpat. Morbi ullamcorper libero sit amet tortor porta iaculis. Duis sit amet diam dolor. Mauris bibendum pharetra justo, sed ornare arcu scelerisque vitae. Integer molestie dignissim lacinia. Etiam sagittis consectetur iaculis. Pellentesque fringilla nulla at tortor dictum lobortis.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta justo in tellus porttitor non placerat dui pulvinar. Aliquam erat volutpat. Morbi ullamcorper libero sit amet tortor porta iaculis. Duis sit amet diam dolor. Mauris bibendum pharetra justo, sed ornare arcu scelerisque vitae. Integer molestie dignissim lacinia. Etiam sagittis consectetur iaculis. Pellentesque fringilla nulla at tortor dictum lobortis.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta justo in tellus porttitor non placerat dui pulvinar. Aliquam erat volutpat. Morbi ullamcorper libero sit amet tortor porta iaculis. Duis sit amet diam dolor. Mauris bibendum pharetra justo, sed ornare arcu scelerisque vitae. Integer molestie dignissim lacinia. Etiam sagittis consectetur iaculis. Pellentesque fringilla nulla at tortor dictum lobortis.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta justo in tellus porttitor non placerat dui pulvinar. Aliquam erat volutpat. Morbi ullamcorper libero sit amet tortor porta iaculis. Duis sit amet diam dolor. Mauris bibendum pharetra justo, sed ornare arcu scelerisque vitae. Integer molestie dignissim lacinia. Etiam sagittis consectetur iaculis. Pellentesque fringilla nulla at tortor dictum lobortis.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta justo in tellus porttitor non placerat dui pulvinar. Aliquam erat volutpat. Morbi ullamcorper libero sit amet tortor porta iaculis. Duis sit amet diam dolor. Mauris bibendum pharetra justo, sed ornare arcu scelerisque vitae. Integer molestie dignissim lacinia. Etiam sagittis consectetur iaculis. Pellentesque fringilla nulla at tortor dictum lobortis.
+					</p>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta justo in tellus porttitor non placerat dui pulvinar. Aliquam erat volutpat. Morbi ullamcorper libero sit amet tortor porta iaculis. Duis sit amet diam dolor. Mauris bibendum pharetra justo, sed ornare arcu scelerisque vitae. Integer molestie dignissim lacinia. Etiam sagittis consectetur iaculis. Pellentesque fringilla nulla at tortor dictum lobortis.
+					</p>
+				</div>
+			</div>
+			<div class="push"></div>
+		</div>
+		<div id="footer" class="footer">
+			<p><a href="#">DE</a> | <a href="#">EN</a> | <a href="#">FR</a></p>
+			<p>Copyright &copy; 2014 BWL, Inc.</p>
+			<p><a href="mailto:who@cares.com">who@cares.com</a> | +41-55 123 45 67</p>
+			<p class="quote">“In wine there is wisdom, in beer there is Freedom, in water there is bacteria.” - Benjamin Franklin</p>
+		</div>
+	</body>
+</html>

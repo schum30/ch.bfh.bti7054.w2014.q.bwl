@@ -1,0 +1,16 @@
+<div id="basket" class="basket">
+	<form class="search-form" action="" method="post">
+		<input class="search-field" type="text" 
+			value="Suchwort eingeben..." 
+			onfocus="if (this.value == 'Suchwort eingeben...')
+			{this.value = '';}" onblur="if (this.value == '')
+			{this.value = 'Suchwort eingeben...';}" />
+		<input class="search-button" type="submit" value="Suchen" />
+	</form>
+	
+	<h1>Ihre Einkäufe:</h1>
+	 <table border="1" style="width:100%">
+		@basketItem@
+	</table> 
+	<a href="#" >Zur Kasse</a>
+</div>

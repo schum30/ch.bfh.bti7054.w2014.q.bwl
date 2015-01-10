@@ -1,22 +1,56 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.
-w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
-<body>
-<div id="header">
-	<a href="./index.php">
-		<img id="logo" src="./img/color_logo.jpg" />
-	</a>
-	@header@
-</div>
-<div id="content">
-	<h2>@title@</h2>
-	@content@
-</div>
-<div id="sidebar">@sidebar@</div>
-<div id="footer">@footer@</div>
-</body>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/smallLayout.css" media="screen and (max-width:500px)">
+		<link rel="stylesheet" type="text/css" href="css/largeLayout.css" media="screen and (min-width:501px)">
+		<script language="javascript" type="text/javascript" src="./js/scriptscrollListener.js"></script>
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />		
+		<title>Beer Wine Liquor</title>
+	</head>
+	<body class="show-basket">
+		<div class="input-blocker" id="input-blocker">
+				<div class="alert-pop-up">
+					<h1 id="alert-pop-up-title"></h1>
+					<p id="alert-pop-up-text"></p>
+					<a href="#" onclick="hidePopUpAlert();return false;">Close</a>
+				</div>
+				<div class="login-pop-up clearfix">
+					<h1>Login</h1>
+					<form>
+						<input name="username" type="text" size="12" maxlength="12" value="  Benutzername..." 
+							onfocus="if (this.value == '  Benutzername...')
+							{this.value = '';}" onblur="if (this.value == '')
+							{this.value = '  Benutzername...';}" >
+						<input name="password" type="password" size="12" maxlength="12">
+						<a href="#" onclick="hidePopUpLogin();return false;">Login</a>
+						<a href="#" onclick="hidePopUpLogin();return false;">Close</a>
+					</form>
+				</div>
+		</div>
+		<div id="wrapper" class="wrapper">
+			<div id="header" class="header">
+				<img class="logo-large" src="img/logo_large.png" alt="BWL Logo"> 
+			</div>
+			<div id="navigation" class="navigation">
+				<ul>
+					@navItems@
+				</ul>
+				
+				<img class="logo-small" src="img/logo_small.png" alt="BWL Logo"> 
+				<div class="top-of-content"></div>
+			</div>
+			
+			<div id="content" class="content">
+				@basket@
+				@content@
+			</div>
+			<div class="push"></div>
+		</div>
+		<div id="footer" class="footer">
+			<p><a href="#">DE</a> | <a href="#">EN</a> | <a href="#">FR</a></p>
+			<p>Copyright &copy; 2014 BWL, Inc.</p>
+			<p><a href="mailto:who@cares.com">who@cares.com</a> | +41-55 123 45 67</p>
+			<p class="quote">“In wine there is wisdom, in beer there is Freedom, in water there is bacteria.” - Benjamin Franklin</p>
+		</div>
+	</body>
 </html>

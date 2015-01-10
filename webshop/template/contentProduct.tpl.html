@@ -1,6 +1,12 @@
-<div id="content">
-	<h2></h2>
-	<div id="product">
-		@product@
-	</div>
+<div class="product">
+	<img src="@imagePath@"> 
+	<h1>@productName@</h1>
+	<p class="clearfix">@description@</p>
+	<form>
+		<select>
+			@options@
+		</select>
+		<input type="number" min="1" max="101" step="1" value="1" name="amount">
+		<a href="#" onclick="form.submit(); return false;">Add</a>
+	</form>
 </div>
