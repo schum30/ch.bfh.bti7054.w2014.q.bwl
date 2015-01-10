@@ -1,10 +1,11 @@
 <div id="basket" class="basket">
-	<form class="search-form" action="" method="post">
+	<form class="search-form" >
 		<input class="search-field" type="text" 
 			value="Suchwort eingeben..." 
 			onfocus="if (this.value == 'Suchwort eingeben...')
 			{this.value = '';}" onblur="if (this.value == '')
-			{this.value = 'Suchwort eingeben...';}" />
+			{this.value = 'Suchwort eingeben...';}"
+			onkeyup="showResult(this.value)"/>
 		<input class="search-button" type="submit" value="Suchen" />
 	</form>
 	
