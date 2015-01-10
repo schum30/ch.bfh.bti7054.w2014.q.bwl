@@ -29,6 +29,17 @@ CREATE TABLE IF NOT EXISTS `products` (
   FOREIGN KEY (`categoryName`) REFERENCES `categories` (`name`),
   FULLTEXT (name,manufacturer,description)
 );
+CREATE TABLE `options`(
+  `id` int(11) PRIMARY KEY AUTO_INCREMENT,
+  `size` int(11) NOT NULL
+);
+CREATE TABLE `productsOptions`(
+	`productId` int(11) NOT NULL,
+    `optionId` int(11) NOT NULL,
+    PRIMARY KEY (`productId`, `optionId`),
+    FOREIGN KEY (`productId`) REFERENCES `products` (`id`),
+    FOREIGN KEY (`optionId`) REFERENCES `options` (`id`)
+);
 CREATE TABLE IF NOT EXISTS `orderstatuses` (
   `status` varchar(15) PRIMARY KEY
 );
@@ -50,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `orderdetails` (
   FOREIGN KEY (`productId`) REFERENCES `products` (`id`)
 );
 
-INSERT categories (name) VALUES ('beer'),('wine'),('liquor');
+INSERT INTO categories (name) VALUES ('beer'),('wine'),('liquor');
 INSERT INTO `addresses` (`id`, `street`, `plz`, `city`) VALUES
 (0, 'M', 1234, 'Musterstadt');
 INSERT INTO `customers` (`name`, `firstName`, `lastName`, `phone`, `addressId`, `password`) VALUES
@@ -75,4 +86,8 @@ INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `descriptio
 (17,'Roter Sauser','wine','Kellerei Stadium','Das Traubenerzeugnis mit Biss aus Hallau.Zweistern Stadium, herrlich prickelnd. Passt zu Wild, Braten, Marroni oder einfach so als Herbstgruss.',50),
 (18,'Pinot Noir Wintersinger','wine','Siebe Dupf','Funkelnde lachsrosa Farbe, kräftige Aromen von roten Beeren, angenehm körperreicher Rosé, ein Hauch Zitrus. Als Apéro, zu Gemüse oder einfach so.',50),
 (19,'Akkurat Rot','wine','Staatskellerei Zürich','Aroma von reifen Beeren, würzig und reich, samtige Tanninstruktur mit fruchtiger Fülle, langer beeriger Abgang. Zu kalten Platten, Geflügel, Käse oder einfach so.',50),
-(20,'Tottinger Blauburgunder','wine','Luzerner Weine','Angenehme, fruchtige Nase, frisches Beeren- und Säurespiel, harmonisch, elegant ausklingend. Zu kalten Platten, leichten Hauptgerichten, Geflügel oder Käse.',50);
+(20,'Tottinger Blauburgunder','wine','Luzerner Weine','Angenehme, fruchtige Nase, frisches Beeren- und Säurespiel, harmonisch, elegant ausklingend. Zu kalten Platten, leichten Hauptgerichten, Geflügel oder Käse.',50),
+(21,'Gin Mare','liquor','Global Premium Brands SA','Spanier produzieren nicht nur Wein. Auch im Gin Herstellen sind sie Meister. Der GIN MARE ist der Beweis dafür.',60);
+INSERT INTO `options` (`id`,`size`) VALUES (1,33),(2,50),(3,70),(4,100);
+INSERT INTO `productsOptions` (`productId`,`optionId`) VALUES (1,1),(1,2),(2,1),(2,2),(3,1),(3,2),(4,1),(4,2),(5,1),(5,2),(6,1),(6,2),(7,1),(7,2),(8,1),(8,2),(9,1),(9,2),(10,1),(10,2);
+INSERT INTO `productsOptions` (`productId`,`optionId`) VALUES (11,3),(11,4),(12,3),(12,4),(13,3),(13,4),(14,3),(14,4),(15,3),(15,4),(16,3),(16,4),(17,3),(17,4),(18,3),(18,4),(19,3),(19,4),(20,3),(20,4),(21,3),(21,4);

@@ -101,6 +101,11 @@ class Site {
 			$ret .= '</a>';
 			$ret .= '<span class="price">' . $product->price . '</span>';
 			$ret .= '<form action="cart.php" method="post">';
+			$ret .= '<select name="options">';
+			foreach($product->options as $option){
+				$ret .= '<option>' . $option . '</option>';
+			}
+			$ret .= '</select>';
 			$ret .= '<input type="hidden" name="id" value="' . $product->id . '" />';
 			$ret .= '<input type="number" name="amount" />';
 			$ret .= '<input type="submit" value="send" />';

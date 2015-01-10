@@ -25,7 +25,8 @@ class DBHandler extends mysqli{
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
 			$price = $product->price;
-			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $price));
+			$options = $this->getOptions($id);
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options, $price));
 		}
 		return $products;
 	}
@@ -39,7 +40,8 @@ class DBHandler extends mysqli{
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
 			$price = $product->price;
-			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $price));
+			$options = $this->getOptions($id);
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options, $price));
 		}
 		return $products;
 	}
@@ -57,7 +59,8 @@ class DBHandler extends mysqli{
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
 			$price = $product->price;
-			return new Product($id, $name, $category, $description, $manufacturer, $price);
+			$options = $this->getOptions($id);
+			return new Product($id, $name, $category, $description, $manufacturer, $options, $price);
 		}
 	}
 	public function getProductsSearch($query){
@@ -70,10 +73,29 @@ class DBHandler extends mysqli{
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
 			$price = $product->price;
-			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $price));
+			$options = $this->getOptions($id);
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options, $price));
 		}
 		
 		return $products;
+	}
+	private function getOptions($id){
+		$ret = array();
+		
+		$query = 'SELECT size FROM
+(SELECT * FROM productsOptions JOIN products ON productsOptions.productId = products.id WHERE products.id = ?) AS a
+JOIN
+options
+ON
+a.optionId = options.id';
+		$stmt = $this->prepare($query);
+		$stmt->bind_param('s', $id);
+		$stmt->execute();
+		$res = $stmt->get_result();
+		while($result = $res->fetch_object()){
+			array_push($ret,$result->size);
+		}
+		return $ret;
 	}
 	public function deleteProduct($product) {
 		$id = $product->id;

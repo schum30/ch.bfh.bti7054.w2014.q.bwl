@@ -6,16 +6,18 @@ class Product{
 	private $category;
 	private $description;
 	private $manufacturer;
+	private $options;
 	private $price;
 	private $imgPath;
 	
-	function __construct($id, $name, $category, $description, $manufacturer, $price) {
+	function __construct($id, $name, $category, $description, $manufacturer, $options, $price) {
 		$this->name = $name;
 		$this->category = $category;
 		$this->description = $description;
 		$this->manufacturer = $manufacturer;
 		$this->price = $price;
 		$this->id = $id;
+		$this->options = $options;
 		$this->imgPath = "./img/products/" . $id . "_" . $name . ".png";
 	}
 	
