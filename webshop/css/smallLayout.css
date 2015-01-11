@@ -8,6 +8,7 @@ body.show-basket .basket {
 }
 
 body.fixed .logo-small {
+	display:none;
 	opacity:0; 
 	transition: opacity 0.5s ease-in;
 }
