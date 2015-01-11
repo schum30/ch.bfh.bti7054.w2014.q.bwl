@@ -1,102 +1,184 @@
 <?php
-
-include_once('inc/product.inc.php');
 include_once('inc/dbHandler.inc.php');
-include_once('inc/site.inc.php');
-include "lang.php";
+include_once('inc/cart.inc.php');
 
 session_start();
-
 function fill_template(&$template, $tag, $content) {
 	$template = str_replace("@$tag@", $content, $template);
 }
 
-$site = new Site();
-$TEMPLATE_PATH = "template/";
-$TEMPLATE_EXTENSION = ".tpl.html";
-
-$view = isset($_GET["view"]) ? $_GET["view"] : NULL;
-$category = $view == "category" && isset($_GET["id"]) ? $_GET["id"] : NULL;
+$TEMPLATE_PATH = 'template/';
+$TEMPLATE_EXTENSION = '.tpl.html';
+$dbHandler = new DBHandler();
+$cart = isset($_SESSION['cart']) ? unserialize($_SESSION['cart']) : new Cart();
+$template = file_get_contents($TEMPLATE_PATH . 'index' . $TEMPLATE_EXTENSION);
+$view = isset($_GET['view']) ? $_GET['view'] : NULL;
+$category = $view == 'category' && isset($_GET['id']) ? $_GET['id'] : NULL;
+$query = $view == 'search' && isset($_GET['query']) ? $_GET['query'] : NULL;
 $customer = isset($_SESSION['customer']) ? $_SESSION['customer'] : NULL;
-switch($view){
-	case NULL:
-	case "products":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentProducts" . $TEMPLATE_EXTENSION);
-		fill_template($templateContent, "products", $site->getProducts());
-		break;
-	case "category":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentProducts" . $TEMPLATE_EXTENSION);
-		$id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-		fill_template($templateContent, "products", $site->getProducts($category));
-		break;
-	case "search":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentProducts" . $TEMPLATE_EXTENSION);
-		$query = isset($_GET["query"]) ? $_GET["query"] : NULL;
-		fill_template($templateContent, "products", $site->getProductsSearch($query));
-		break;
-	case "product":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentProduct" . $TEMPLATE_EXTENSION);
-		$id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-		fill_template($templateContent, "product", $site->getProduct($id));
-		break;
-	case "checkout":
-		if($_SESSION['customer'] != null){
-			$address = $customer->address;
-			$templateContent = file_get_contents($TEMPLATE_PATH . "contentCheckout" . $TEMPLATE_EXTENSION);
-			fill_template($templateContent, 'firstName', $customer->firstName);
-			fill_template($templateContent, 'lastName', $customer->lastName);
-			fill_template($templateContent, 'street', $address->street);
-			fill_template($templateContent, 'plz', $address->plz);
-			fill_template($templateContent, 'city', $address->city);
-		} else {
-			$templateContent = '<div id="content">login first to order</div>';
+
+//fill navigation
+$templateNavItem = file_get_contents($TEMPLATE_PATH . 'navItem' . $TEMPLATE_EXTENSION);
+$navtmp = '';
+foreach($dbHandler->getCategories() as $categoryItem){
+	$tmp = $templateNavItem;
+	$href = '?view=category&id=' . $categoryItem;
+	fill_template($tmp, 'navHref', $href);
+	fill_template($tmp, 'navOnClick', '');
+	fill_template($tmp, 'navText', $categoryItem);
+	if($categoryItem == $category){
+		fill_template($tmp, 'navCssClass', 'selected');
+	} else {
+		fill_template($tmp, 'navCssClass', '');
+	}
+	$navtmp .= $tmp;
+}
+if(isset($_SESSION['customer'])){
+	$tmp = $templateNavItem;
+	fill_template($tmp, 'navHref', '?view=account');
+	fill_template($tmp, 'navOnClick', '');
+	fill_template($tmp, 'navText', 'mein konto');
+	if($view == 'account'){
+		fill_template($tmp, 'navCssClass', 'selected');
+	}
+	$navtmp .= $tmp;
+} else {
+	$tmp = $templateNavItem;
+	fill_template($tmp, 'navHref', '?view=login');
+	fill_template($tmp, 'navOnClick', '');
+	fill_template($tmp, 'navText', 'Login');
+	if($view == 'login'){
+		fill_template($tmp, 'navCssClass', 'selected');
+	}
+	$navtmp .= $tmp;
+}
+fill_template($template, 'navItems', $navtmp);
+
+//fill basket
+$templateBasket = file_get_contents($TEMPLATE_PATH . 'basket' . $TEMPLATE_EXTENSION);
+
+if(isset($_SESSION['cart'])){
+	$templateBasketItem = file_get_contents($TEMPLATE_PATH . 'basketItem' . $TEMPLATE_EXTENSION);
+	
+	$items = $cart->getItems();
+	
+	if(count($items) >= 1){
+		$basketItemstmp = '';
+		
+		foreach($items as $key => $obj){
+			$product = $dbHandler->getProduct($key);
+			foreach($obj as $key => $num){
+				$tmp = $templateBasketItem;
+				fill_template($tmp, 'productName', $product->name . ' ' . $key . 'cl');
+				fill_template($tmp, 'price', $product->price);
+				fill_template($tmp, 'productId', $product->id);
+				fill_template($tmp, 'amount', $num);
+				fill_template($tmp, 'priceSum', $product->price * $num);
+				$basketItemstmp .= $tmp;
+			}
 		}
+		fill_template($templateBasket, 'basketItems', $basketItemstmp);
+	} else {
+		fill_template($templateBasket, 'basketItems', 'Der Warenkorb ist leer');
+	}
+} else {
+	fill_template($templateBasket, 'basketItems', 'Der Warenkorb ist leer');
+}
+
+if(isset($_SESSION['customer'])){
+	fill_template($templateBasket, 'basketLink', 'checkout');
+} else {
+	fill_template($templateBasket, 'basketLink', 'login');
+}
+
+fill_template($template, 'basket', $templateBasket);
+
+//fill content
+switch($view){
+	case 'category':
+		$products = $dbHandler->getProductsByCategory($category);
+	case 'search':
+		if(!isset($products)){
+			$products = $dbHandler->getProductsSearch($query);
+		}
+	case NULL;
+	case 'products':
+		if(!isset($products)){
+			$products = $dbHandler->getAllProducts();
+		}
+		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentProducts' . $TEMPLATE_EXTENSION);
+		$templateProduct = file_get_contents($TEMPLATE_PATH . 'contentProduct' . $TEMPLATE_EXTENSION);
+		$productstmp = '';
+		foreach($products as $product){
+			$tmp = $templateProduct;
+			fill_template($tmp, 'imagePath', $product->imgPath);
+			fill_template($tmp, 'productName', $product->name);
+			fill_template($tmp, 'description', $product->description);
+			fill_template($tmp, 'productId', $product->id);
+			$options = '';
+			foreach($product->options as $option){
+				$options .= '<option value="' . $option . '">' . $option . ' cl</option>';
+			}
+			fill_template($tmp, 'options', $options);
+			$productstmp .= $tmp;
+		}
+		fill_template($templateContent, 'products', $productstmp);
 		break;
-	case "confirm":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentConfirm" . $TEMPLATE_EXTENSION);
-		fill_template($templateContent, 'cart', $site->getCart());
-		fill_template($templateContent, 'options', $_SESSION['paymentmethod']);
+	case 'login':
+		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentLogin' . $TEMPLATE_EXTENSION);
 		break;
-	case "register":
-		$templateContent = file_get_contents($TEMPLATE_PATH . "contentRegister" . $TEMPLATE_EXTENSION);
+	case 'account':
+		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentAccount' . $TEMPLATE_EXTENSION);
 		break;
-	case "account";
+	case 'checkout':
+		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentCheckout' . $TEMPLATE_EXTENSION);
+		fill_template($templateContent, 'firstName', $customer->firstName);
+		fill_template($templateContent, 'lastName', $customer->lastName);
+		fill_template($templateContent, 'street', $customer->address->street);
+		fill_template($templateContent, 'plz', $customer->address->plz);
+		fill_template($templateContent, 'city', $customer->address->city);
+		break;
+	case 'confirm':
+		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentConfirm' . $TEMPLATE_EXTENSION);
+		$items = $cart->getItems();
+		
+		if(count($items) >= 1){
+			$basketItemstmp = '';
+			
+			foreach($items as $key => $obj){
+				$product = $dbHandler->getProduct($key);
+				foreach($obj as $key => $num){
+					$tmp = $templateBasketItem;
+					fill_template($tmp, 'productName', $product->name . ' ' . $key . 'cl');
+					fill_template($tmp, 'price', $product->price);
+					fill_template($tmp, 'productId', $product->id);
+					fill_template($tmp, 'amount', $num);
+					fill_template($tmp, 'priceSum', $product->price * $num);
+					$basketItemstmp .= $tmp;
+				}
+			}
+			fill_template($templateContent, 'basketItems', $basketItemstmp);
+		} else {
+			fill_template($templateContent, 'basketItems', 'Der Warenkorb ist leer');
+		}
+		fill_template($templateContent, 'options', 'Abrechnung: ' . $_SESSION['paymentmethod']);
+		break;
 	default:
-		$templateContent = file_get_contents($TEMPLATE_PATH . "content404" . $TEMPLATE_EXTENSION);
+		$templateContent = file_get_contents($TEMPLATE_PATH . 'content404' . $TEMPLATE_EXTENSION);
 		break;
 }
-$templateHead = file_get_contents($TEMPLATE_PATH . "head" . $TEMPLATE_EXTENSION);
-$templateHeader = file_get_contents($TEMPLATE_PATH . "header" . $TEMPLATE_EXTENSION);
-$templateSidebar = file_get_contents($TEMPLATE_PATH . "sidebar" . $TEMPLATE_EXTENSION);
-$templateFooter = file_get_contents($TEMPLATE_PATH . "footer" . $TEMPLATE_EXTENSION);
+fill_template($template, 'content', $templateContent);
 
-fill_template($templateHeader, "login", $site->getLogin($customer));
-fill_template($templateHeader, "categories", $site->getCategories($category));
-fill_template($templateSidebar, "cart", $site->getCart());
-fill_template($templateFooter, "footer", $site->getFooter());
+//fill quote
+$service_url = 'http://api.adviceslip.com/advice';
+$curl = curl_init($service_url);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+$curl_response = curl_exec($curl);
+curl_close($curl);
+$decoded = json_decode($curl_response);
+$quote = $decoded->slip->advice;
+fill_template($template, 'quote', $quote);
 
-$template = $templateHead . $templateHeader . $templateContent . $templateSidebar . $templateFooter;
-
+//return the site
 echo $template;
-/*
-$template = file_get_contents("template/index.tpl.html");
-$site = new Site;
-
-session_start();
-$view = isset($_GET["view"]) ? $_GET["view"] : NULL;
-$category = isset($_GET["category"]) ? $_GET["category"] : NULL;
-$query = isset($_GET["query"]) ? $_GET["query"] : NULL;
-$id = isset($_GET["id"]) ? $_GET["id"] : NULL;
-$user = isset($_SESSION["user"]) ? $_SESSION["user"] : NULL;
-$cart = isset($_SESSION["cart"]) ? $_SESSION["cart"] : NULL;
-$dbHandler = new DBHandler;
-
-fill_template($template, "header", $site->getHeader($user));
-fill_template($template, "title", $site->getTitle());
-fill_template($template, "content", $site->getContent($view, $category, $query, $id));
-fill_template($template, "sidebar", $site->getSidebar());
-fill_template($template, "footer", $site->getFooter());
-
-echo $template;
-*/
 ?>

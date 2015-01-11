@@ -3,18 +3,15 @@ include_once('product.inc.php');
 class Cart { 
 		private $items = array();
 
-		public function addItem($art, $num) { 
-			if (!isset($this->items[$art])) {
-				$this->items[$art] = 0; 
-			}
-			$this->items[$art] += $num;
+		public function addItem($art, $num, $option) {
+			$this->items[$art][$option] += $num;
 		}
 
-		public function removeItem($art, $num) { 
-			if (isset($this->items[$art]) && $this->items[$art] >= $num) { 
-				$this->items[$art] -= $num;
-				if ($this->items[$art] == 0) {
-					unset($this->items[$art]);
+		public function removeItem($art, $num, $option) { 
+			if (isset($this->items[$art][$option]) && $this->items[$art] >= $num) { 
+				$this->items[$art][$option] -= $num;
+				if ($this->items[$art][$option] == 0) {
+					unset($this->items[$art][$option]);
 				}
 				return true;
 			} 
@@ -23,32 +20,16 @@ class Cart {
 			}
 		}
 
-		public function emptyCart($art, $num) { 
+		public function emptyCart() { 
 			unset($items);
 		}
 
-		public function calcCart($art, $num) { 
+		public function calcCart() { 
 			
 		}
-
-		public function display() { 
-			$ret = '<table border=\"1\">'; 
-			$ret .= '<tr><th>Article</th><th>Items</th></tr>'; 
-			foreach ($this->items as $art=>$num){
-				$ret .= '<tr><td>' . $art . '</td><td>' . $num . '</td></tr>';
-			}
-			$ret .= '</table>';
-			return $ret;
-		} 
 		
 		public function getItems(){
-			$dbHandler = new DBHandler();
-			$ret = new SplObjectStorage();
-			foreach($this->items as $art=>$num){
-				$product = $dbHandler->getProduct($art);
-				$ret[$product] = $num;
-			}
-			return $ret;
+			return $this->items;
 		}
 } 
 ?>

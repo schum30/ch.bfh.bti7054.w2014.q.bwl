@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 		if(!is_null($customer)){
 			$_SESSION['customer'] = $customer;
 			header('HTTP/1.1 303 See Other');
-			header('Location: ' . $_SERVER['HTTP_REFERER']);
+			header('Location: index.php');
 		} else{
 			echo 'Wrong password or user does not exist!';
 		}

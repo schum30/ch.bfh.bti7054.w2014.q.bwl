@@ -2,7 +2,7 @@
 session_start();
 include('inc/cart.inc.php');
 include('inc/site.inc.php');
-$cart = isset($_SESSION["cart"]) ? unserialize($_SESSION["cart"]) : new Cart();
+$cart = isset($_SESSION['cart']) ? unserialize($_SESSION['cart']) : new Cart();
 
 $req = $_SERVER['REQUEST_METHOD'];
 
@@ -16,15 +16,10 @@ if($req == 'GET'){
 		$cart->removeItem($_GET['id'], 1);
 		echo $site->getCart();
 	}
-}
-
-else {
-	$id = $_POST['id'];
-	$amount = $_POST['amount'];
-	$cart->addItem($id, $amount);
+} else {
+	$cart->addItem($_POST['id'],$_POST['amount'],$_POST['option']);
 	header('HTTP/1.1 303 See Other');
 	header("Location: $_SERVER[HTTP_REFERER]");
 }
-
-$_SESSION["cart"] = serialize($cart);
+$_SESSION['cart'] = serialize($cart);
 ?>

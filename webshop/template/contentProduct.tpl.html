@@ -2,11 +2,13 @@
 	<img src="@imagePath@"> 
 	<h1>@productName@</h1>
 	<p class="clearfix">@description@</p>
-	<form>
-		<select>
+	<form method="post" action="cart.php">
+		<input type="hidden" value="@productId@" name="id">
+		<select name="option">
 			@options@
 		</select>
 		<input type="number" min="1" max="101" step="1" value="1" name="amount">
-		<a href="#" onclick="form.submit(); return false;">Add</a>
+		<!--<a href="javascript:void(0)" onclick="addItemToCart(@productId@, option, amount);return false;">Add</a>-->
+		<input type="submit" value="Add">
 	</form>
 </div>

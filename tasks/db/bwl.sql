@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `orderdetails` (
 
 INSERT INTO categories (name) VALUES ('beer'),('wine'),('liquor');
 INSERT INTO `addresses` (`id`, `street`, `plz`, `city`) VALUES
-(0, 'M', 1234, 'Musterstadt');
+(0, 'Mustergasse 11', 1234, 'Musterstadt');
 INSERT INTO `customers` (`name`, `firstName`, `lastName`, `phone`, `addressId`, `password`) VALUES
 ('hm', 'Hans', 'Meier', '034 445 53 06', 0, 'password');
 INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `description`, `price`) VALUES
