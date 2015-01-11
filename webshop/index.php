@@ -44,8 +44,8 @@ if(isset($_SESSION['customer'])){
 	$navtmp .= $tmp;
 } else {
 	$tmp = $templateNavItem;
-	fill_template($tmp, 'navHref', '?view=login');
-	fill_template($tmp, 'navOnClick', '');
+	fill_template($tmp, 'navHref', 'javascript:void(0)');
+	fill_template($tmp, 'navOnClick', 'showPopUpLogin();return false;');
 	fill_template($tmp, 'navText', 'Login');
 	if($view == 'login'){
 		fill_template($tmp, 'navCssClass', 'selected');
@@ -57,7 +57,9 @@ fill_template($template, 'navItems', $navtmp);
 //fill basket
 $templateBasket = file_get_contents($TEMPLATE_PATH . 'basket' . $TEMPLATE_EXTENSION);
 
-if(isset($_SESSION['cart'])){
+if($view == 'account' || $view == 'checkout' || $view == 'confirm'){
+	fill_template($template, 'basket', '');
+} else {
 	$templateBasketItem = file_get_contents($TEMPLATE_PATH . 'basketItem' . $TEMPLATE_EXTENSION);
 	
 	$items = $cart->getItems();
@@ -69,11 +71,14 @@ if(isset($_SESSION['cart'])){
 			$product = $dbHandler->getProduct($key);
 			foreach($obj as $key => $num){
 				$tmp = $templateBasketItem;
-				fill_template($tmp, 'productName', $product->name . ' ' . $key . 'cl');
-				fill_template($tmp, 'price', $product->price);
+				$price = number_format($product->options[$key],2);
+				fill_template($tmp, 'productName', $product->name);
+				fill_template($tmp, 'option', $key);
+				fill_template($tmp, 'price', $price);
 				fill_template($tmp, 'productId', $product->id);
 				fill_template($tmp, 'amount', $num);
-				fill_template($tmp, 'priceSum', $product->price * $num);
+				$priceSum = number_format($price * $num, 2);
+				fill_template($tmp, 'priceSum', $priceSum);
 				$basketItemstmp .= $tmp;
 			}
 		}
@@ -81,17 +86,15 @@ if(isset($_SESSION['cart'])){
 	} else {
 		fill_template($templateBasket, 'basketItems', 'Der Warenkorb ist leer');
 	}
-} else {
-	fill_template($templateBasket, 'basketItems', 'Der Warenkorb ist leer');
+	if(isset($_SESSION['customer'])){
+		fill_template($templateBasket, 'basketHref', '?view=checkout');
+	} else {
+		fill_template($templateBasket, 'basketHref', 'javascript:void(0)');
+		fill_template($templateBasket, 'basketOnClick', 'showPopUpLogin();return false;');
+		fill_template($tmp, 'navOnClick', 'showPopUpLogin();return false;');
+	}
+	fill_template($template, 'basket', $templateBasket);
 }
-
-if(isset($_SESSION['customer'])){
-	fill_template($templateBasket, 'basketLink', 'checkout');
-} else {
-	fill_template($templateBasket, 'basketLink', 'login');
-}
-
-fill_template($template, 'basket', $templateBasket);
 
 //fill content
 switch($view){
@@ -116,8 +119,8 @@ switch($view){
 			fill_template($tmp, 'description', $product->description);
 			fill_template($tmp, 'productId', $product->id);
 			$options = '';
-			foreach($product->options as $option){
-				$options .= '<option value="' . $option . '">' . $option . ' cl</option>';
+			foreach($product->options as $key => $num){
+				$options .= '<option value="' . $key . '">' . $key . 'cl ' . $num .'</option>';
 			}
 			fill_template($tmp, 'options', $options);
 			$productstmp .= $tmp;
@@ -143,17 +146,21 @@ switch($view){
 		$items = $cart->getItems();
 		
 		if(count($items) >= 1){
+			$templateBasketItem = file_get_contents($TEMPLATE_PATH . 'basketItem' . $TEMPLATE_EXTENSION);
 			$basketItemstmp = '';
 			
 			foreach($items as $key => $obj){
 				$product = $dbHandler->getProduct($key);
 				foreach($obj as $key => $num){
 					$tmp = $templateBasketItem;
-					fill_template($tmp, 'productName', $product->name . ' ' . $key . 'cl');
-					fill_template($tmp, 'price', $product->price);
+					$price = number_format($product->options[$key],2);
+					$priceSum = number_format($price * $num, 2);
+					fill_template($tmp, 'productName', $product->name);
+					fill_template($tmp, 'option', $key);
+					fill_template($tmp, 'price', $price);
 					fill_template($tmp, 'productId', $product->id);
 					fill_template($tmp, 'amount', $num);
-					fill_template($tmp, 'priceSum', $product->price * $num);
+					fill_template($tmp, 'priceSum', $priceSum);
 					$basketItemstmp .= $tmp;
 				}
 			}

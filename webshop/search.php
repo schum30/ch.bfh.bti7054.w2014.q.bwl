@@ -26,8 +26,8 @@ if(count($products) >= 1){
 		fill_template($tmp, 'description', $product->description);
 		fill_template($tmp, 'productId', $product->id);
 		$options = '';
-		foreach($product->options as $option){
-			$options .= '<option value="' . $option . '">' . $option . ' cl</option>';
+		foreach($product->options as $key => $num){
+			$options .= '<option value="' . $key . '">' . $key . 'cl ' . $num .'</option>';
 		}
 		fill_template($tmp, 'options', $options);
 		$productstmp .= $tmp;

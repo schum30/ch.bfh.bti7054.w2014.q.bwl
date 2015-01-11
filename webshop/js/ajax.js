@@ -19,9 +19,11 @@ function addItemToCart(id, option, amount) {
 	}
 	xmlhttp= new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function() {
-		document.getElementById("cart").innerHTML=xmlhttp.responseText;
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			document.getElementById("basket").outerHTML=xmlhttp.responseText;
+		}
 	}
-	xmlhttp.open("GET", "cart.php?action=add&id="+id+"?option="+option,true);
+	xmlhttp.open("GET", "cart.php?action=add&id="+id+"&option="+option+"&amount="+amount,true);
 	xmlhttp.send();
 }
 
@@ -31,8 +33,10 @@ function removeItemFromCart(id, option, amount) {
 	}
 	xmlhttp= new XMLHttpRequest();
 	xmlhttp.onreadystatechange=function() {
-		document.getElementById("cart").innerHTML=xmlhttp.responseText;
+		if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+			document.getElementById("basket").outerHTML=xmlhttp.responseText;
+		}
 	}
-	xmlhttp.open("GET", "cart.php?action=remove&id="+id,true);
+	xmlhttp.open("GET", "cart.php?action=remove&id="+id+"&option="+option+"&amount="+amount,true);
 	xmlhttp.send();
 }

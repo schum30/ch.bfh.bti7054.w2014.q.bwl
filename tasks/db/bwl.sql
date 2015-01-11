@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS `products` (
   `categoryName` varchar(50) NOT NULL,
   `manufacturer` varchar(80) NOT NULL,
   `description` text,
-  `price` double NOT NULL,
   FOREIGN KEY (`categoryName`) REFERENCES `categories` (`name`),
   FULLTEXT (name,manufacturer,description)
 );
@@ -36,6 +35,7 @@ CREATE TABLE `options`(
 CREATE TABLE `productsOptions`(
 	`productId` int(11) NOT NULL,
     `optionId` int(11) NOT NULL,
+    `price` double NOT NULL,
     PRIMARY KEY (`productId`, `optionId`),
     FOREIGN KEY (`productId`) REFERENCES `products` (`id`),
     FOREIGN KEY (`optionId`) REFERENCES `options` (`id`)
@@ -66,28 +66,28 @@ INSERT INTO `addresses` (`id`, `street`, `plz`, `city`) VALUES
 (0, 'Mustergasse 11', 1234, 'Musterstadt');
 INSERT INTO `customers` (`name`, `firstName`, `lastName`, `phone`, `addressId`, `password`) VALUES
 ('hm', 'Hans', 'Meier', '034 445 53 06', 0, 'password');
-INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `description`, `price`) VALUES
-(1,'Amber', 'beer', 'Aare Bier', 'Rotkupfer, Caramel, Bisquit, blumig, schöne Malzigkeit, frisch mit Charakter', 5.5),
-(2,'Ueli', 'beer', 'Ueli Bier', 'Hell und spritzig, altbewährt', 5.5),
-(3,'Brandlöscher','beer','Appenzeller Bier','Amber, süsslich-herb, üppige Karamalznote, mittelkräftig und cremig',6.00),
-(4,'Quöllfrisch','beer','Appenzeller Bier','Klares Gelb, harmonische Malz- und Hopfennoten, rund, geschmacksvoll und frisch',4.50),
-(5,'Dude','beer','Bad Attitude','Ambergold, raffiniert-hopfig, Exotik, Pinie, Harz, kräftig und charaktervoll',4.00),
-(6,'em Basler sy Bier','beer','Basler Bier','Hellgelb, harmonisch und rund, mittelkräftig, leicht malzig, frisch und süffig',5.00),
-(7,'Boxer Old','beer','Bièrer du Boxer','Gelb, angenehm hopfig, dezent malzig, leicht bitter, aromatisch und frisch',5.00),
-(8,'Maximus','beer','Egger Bier','Hellgelb, raffiniert hopfig, Gras, dezente Malznote, elegant mit guter Frische',4.50),
-(9,'Maisgold','beer','Einsiedler Brauerei','Goldgelb, Mais, Butter, Getreide, cremig-elegant, dezent süss, harmonisch',3.80),
-(10,'Öufi','beer','Öufi Brauerei','Gelb, toller Hopfen, Zitrus, aromatisch rund, herb, knackig-herb, frisch',3.80),
-(11,'Bündner Röteli', 'liquor', 'Kindschi Söhne AG', 'ist ein naturreiner Likör mit 22 %vol. Alkohol. Getrocknete Kirschen werden zusammen mit einer natürlichen Gewürzmischung über eine längere Zeit in Kernobstbrand eingelegt. Nach der nötigen Reifezeit erfolgt die Fertigfabrikation, unter Beigabe von Kirschsaft und diversen Aromen. (z.B. Zimt, Vanille und Nelken). ', 29.95),
-(12,'Willisauer Ringli Likör','liquor','Diwisa Distillerie','Ringli - der neue aromatische Liqueur mit dem milden Geschmack von Honig, Caramel und natürlichen Zitrus-Essenzen. Als Cocktail, Longdrink, "On the Rocks", im Kaffee oder Dessert. Ringli - absolut in der Vielfalt seiner Anwendung.Unverkennbar! Aussergwöhnlicher Geschmack im aussergewöhnlichen Design.',35),
-(13,'Vieille Prune','liquor','Etter Distillerie','Vieille Prune ist eine wunderbare, zarte Pflümli-Spezialität aus kleinen Schweizer Löhrpflaumen. Nach 3 Jahren sorgsamer Pflege erhält diese seinen fruchtigen und feinaromatischen Geschmack.',45),
-(14,'Baileys Irish Cream','liquor','Diageo','Baileys ist die umgangssprachliche Kurzform für Baileys Original Irish Cream, den Markennamen eines irischen Creamlikörs aus irischem Whiskey und Sahne mit einem Alkoholgehalt von 17 Vol.-%. Baileys gehört zum Diageo-Konzern.',35),
-(15,'Rouvinez Fendant De Sierre', 'wine', 'Rouvinez', 'Frische Frucht mit Zitrus- und Blumennoten, rund und bekömmlich, angenehme Säure, süffig. Als Apéro, perfekt zu Fondue oder Käsespezialitäten.', 50),
-(16,'Pinot Gris Dardagny','wine','Domaine Les Hutins','Frisches und fruchtbetontes Bukett, im Gaumen kräftige Quitten-Frucht, gleichzeitig sehr rund und weich, vollmundiges Finale. Als Apéro, zu Fisch, Spargeln oder kalten Platten.',50),
-(17,'Roter Sauser','wine','Kellerei Stadium','Das Traubenerzeugnis mit Biss aus Hallau.Zweistern Stadium, herrlich prickelnd. Passt zu Wild, Braten, Marroni oder einfach so als Herbstgruss.',50),
-(18,'Pinot Noir Wintersinger','wine','Siebe Dupf','Funkelnde lachsrosa Farbe, kräftige Aromen von roten Beeren, angenehm körperreicher Rosé, ein Hauch Zitrus. Als Apéro, zu Gemüse oder einfach so.',50),
-(19,'Akkurat Rot','wine','Staatskellerei Zürich','Aroma von reifen Beeren, würzig und reich, samtige Tanninstruktur mit fruchtiger Fülle, langer beeriger Abgang. Zu kalten Platten, Geflügel, Käse oder einfach so.',50),
-(20,'Tottinger Blauburgunder','wine','Luzerner Weine','Angenehme, fruchtige Nase, frisches Beeren- und Säurespiel, harmonisch, elegant ausklingend. Zu kalten Platten, leichten Hauptgerichten, Geflügel oder Käse.',50),
-(21,'Gin Mare','liquor','Global Premium Brands SA','Spanier produzieren nicht nur Wein. Auch im Gin Herstellen sind sie Meister. Der GIN MARE ist der Beweis dafür.',60);
+INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `description`) VALUES
+(1,'Amber', 'beer', 'Aare Bier', 'Rotkupfer, Caramel, Bisquit, blumig, schöne Malzigkeit, frisch mit Charakter'),
+(2,'Ueli', 'beer', 'Ueli Bier', 'Hell und spritzig, altbewährt'),
+(3,'Brandlöscher','beer','Appenzeller Bier','Amber, süsslich-herb, üppige Karamalznote, mittelkräftig und cremig'),
+(4,'Quöllfrisch','beer','Appenzeller Bier','Klares Gelb, harmonische Malz- und Hopfennoten, rund, geschmacksvoll und frisch'),
+(5,'Dude','beer','Bad Attitude','Ambergold, raffiniert-hopfig, Exotik, Pinie, Harz, kräftig und charaktervoll'),
+(6,'em Basler sy Bier','beer','Basler Bier','Hellgelb, harmonisch und rund, mittelkräftig, leicht malzig, frisch und süffig'),
+(7,'Boxer Old','beer','Bièrer du Boxer','Gelb, angenehm hopfig, dezent malzig, leicht bitter, aromatisch und frisch'),
+(8,'Maximus','beer','Egger Bier','Hellgelb, raffiniert hopfig, Gras, dezente Malznote, elegant mit guter Frische'),
+(9,'Maisgold','beer','Einsiedler Brauerei','Goldgelb, Mais, Butter, Getreide, cremig-elegant, dezent süss, harmonisch'),
+(10,'Öufi','beer','Öufi Brauerei','Gelb, toller Hopfen, Zitrus, aromatisch rund, herb, knackig-herb, frisch'),
+(11,'Bündner Röteli', 'liquor', 'Kindschi Söhne AG', 'ist ein naturreiner Likör mit 22 %vol. Alkohol. Getrocknete Kirschen werden zusammen mit einer natürlichen Gewürzmischung eingelegt.'),
+(12,'Willisauer Ringli Likör','liquor','Diwisa Distillerie','Ringli - der neue aromatische Liqueur mit dem milden Geschmack von Honig, Caramel und natürlichen Zitrus-Essenzen.'),
+(13,'Vieille Prune','liquor','Etter Distillerie','Vieille Prune ist eine wunderbare, zarte Pflümli-Spezialität aus kleinen Schweizer Löhrpflaumen.'),
+(14,'Baileys Irish Cream','liquor','Diageo','Baileys ist die umgangssprachliche Kurzform für Baileys Original Irish Cream.'),
+(15,'Rouvinez Fendant De Sierre', 'wine', 'Rouvinez', 'Frische Frucht mit Zitrus- und Blumennoten, rund und bekömmlich, angenehme Säure, süffig.'),
+(16,'Pinot Gris Dardagny','wine','Domaine Les Hutins','Frisches und fruchtbetontes Bukett, im Gaumen kräftige Quitten-Frucht, gleichzeitig sehr rund und weich, vollmundiges Finale.'),
+(17,'Roter Sauser','wine','Kellerei Stadium','Das Traubenerzeugnis mit Biss aus Hallau.Zweistern Stadium, herrlich prickelnd. Passt zu Wild, Braten, Marroni oder einfach so als Herbstgruss.'),
+(18,'Pinot Noir Wintersinger','wine','Siebe Dupf','Funkelnde lachsrosa Farbe, kräftige Aromen von roten Beeren, angenehm körperreicher Rosé, ein Hauch Zitrus. Als Apéro, zu Gemüse oder einfach so.'),
+(19,'Akkurat Rot','wine','Staatskellerei Zürich','Aroma von reifen Beeren, würzig und reich, samtige Tanninstruktur mit fruchtiger Fülle, langer beeriger Abgang.'),
+(20,'Tottinger','wine','Luzerner Weine','Angenehme, fruchtige Nase, frisches Beeren- und Säurespiel, harmonisch, elegant ausklingend. Zu kalten Platten, leichten Hauptgerichten, Geflügel oder Käse.'),
+(21,'Gin Mare','liquor','Global Premium Brands SA','Spanier produzieren nicht nur Wein. Auch im Gin Herstellen sind sie Meister. Der GIN MARE ist der Beweis dafür.');
 INSERT INTO `options` (`id`,`size`) VALUES (1,33),(2,50),(3,70),(4,100);
-INSERT INTO `productsOptions` (`productId`,`optionId`) VALUES (1,1),(1,2),(2,1),(2,2),(3,1),(3,2),(4,1),(4,2),(5,1),(5,2),(6,1),(6,2),(7,1),(7,2),(8,1),(8,2),(9,1),(9,2),(10,1),(10,2);
-INSERT INTO `productsOptions` (`productId`,`optionId`) VALUES (11,3),(11,4),(12,3),(12,4),(13,3),(13,4),(14,3),(14,4),(15,3),(15,4),(16,3),(16,4),(17,3),(17,4),(18,3),(18,4),(19,3),(19,4),(20,3),(20,4),(21,3),(21,4);
+INSERT INTO `productsOptions` (`productId`,`optionId`,`price`) VALUES (1,1,3.30),(1,2,5.50),(2,1,3.30),(2,2,5.50),(3,1,4.00),(3,2,6.00),(4,1,2.50),(4,2,4.00),(5,1,3.00),(5,2,5.00),(6,1,2.00),(6,2,3.00),(7,1,1.95),(7,2,2.50),(8,1,2.50),(8,2,4.00),(9,1,1.80),(9,2,2.40),(10,1,3.00),(10,2,5.00);
+INSERT INTO `productsOptions` (`productId`,`optionId`,`price`) VALUES (11,3,29.90),(11,4,39.90),(12,3,35.90),(12,4,48.90),(13,3,30.00),(13,4,40.00),(14,3,30.00),(14,4,40.00),(15,3,30.00),(15,4,40.00),(16,3,30.00),(16,4,40.00),(17,3,30.00),(17,4,40.00),(18,3,30.00),(18,4,40.00),(19,3,30.00),(19,4,40.00),(20,3,30.00),(20,4,40.00),(21,3,30.00),(21,4,40.00);

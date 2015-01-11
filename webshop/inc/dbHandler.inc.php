@@ -39,9 +39,8 @@ class DBHandler extends mysqli{
 			$category = $product->categoryName;
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
-			$price = $product->price;
 			$options = $this->getOptions($id);
-			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options, $price));
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options));
 		}
 		return $products;
 	}
@@ -58,9 +57,8 @@ class DBHandler extends mysqli{
 			$category = $product->categoryName;
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
-			$price = $product->price;
 			$options = $this->getOptions($id);
-			return new Product($id, $name, $category, $description, $manufacturer, $options, $price);
+			return new Product($id, $name, $category, $description, $manufacturer, $options);
 		}
 	}
 	public function getProductsSearch($query){
@@ -72,9 +70,8 @@ class DBHandler extends mysqli{
 			$category = $product->categoryName;
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
-			$price = $product->price;
 			$options = $this->getOptions($id);
-			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options, $price));
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options));
 		}
 		
 		return $products;
@@ -82,7 +79,7 @@ class DBHandler extends mysqli{
 	private function getOptions($id){
 		$ret = array();
 		
-		$query = 'SELECT size FROM
+		$query = 'SELECT size,price FROM
 (SELECT * FROM productsOptions JOIN products ON productsOptions.productId = products.id WHERE products.id = ?) AS a
 JOIN
 options
@@ -93,7 +90,9 @@ a.optionId = options.id';
 		$stmt->execute();
 		$res = $stmt->get_result();
 		while($result = $res->fetch_object()){
-			array_push($ret,$result->size);
+			$optionPrice = array();
+			$optionPrice[$result->size] = $result->price;
+			$ret[$result->size] = $result->price;
 		}
 		return $ret;
 	}

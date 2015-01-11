@@ -1,8 +1,8 @@
  <tr>
-	<td>@productName@</td>
+	<td>@productName@ @option@cl</td>
 	<td>
-		<a class="amount-picker" href="javascript:void(0)" onclick="addItemToCart(@productId@);return false;">>+</a>
-		<a class="amount-picker" href="javascript:void(0)" onclick="removeItemFromCart(@productId@);return false;">>-</a>
+		<a class="amount-picker" href="javascript:void(0)" onclick="addItemToCart(@productId@,@option@,1);return false;">+</a>
+		<a class="amount-picker" href="javascript:void(0)" onclick="removeItemFromCart(@productId@,@option@,1);return false;">-</a>
 	</td>
 	<td>@amount@x@price@</td>
 	<td>@priceSum@</td>

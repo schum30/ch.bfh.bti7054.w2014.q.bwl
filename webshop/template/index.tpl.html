@@ -21,14 +21,14 @@
 				</div>
 				<div class="login-pop-up clearfix">
 					<h1>Login</h1>
-					<form>
+					<form id="login" name="login" action="login.php" method="post">
 						<input name="username" type="text" size="12" maxlength="12" value="  Benutzername..." 
 							onfocus="if (this.value == '  Benutzername...')
 							{this.value = '';}" onblur="if (this.value == '')
 							{this.value = '  Benutzername...';}" >
 						<input name="password" type="password" size="12" maxlength="12">
-						<a href="#" onclick="hidePopUpLogin();return false;">Login</a>
-						<a href="#" onclick="hidePopUpLogin();return false;">Close</a>
+						<a href="javascript:void(0)" onclick="submitLogin();">Login</a>
+						<a href="javascript:void(0)" onclick="hidePopUpLogin();return false;">Close</a>
 					</form>
 				</div>
 		</div>

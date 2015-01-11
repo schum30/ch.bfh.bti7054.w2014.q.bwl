@@ -6,4 +6,7 @@ function lieferadresse(){
     else{
         document.getElementById("shippingaddress").style.display = "block";
     } 
-} 
+}
+function submitLogin(){
+	document.login.submit();
+}
