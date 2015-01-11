@@ -24,9 +24,8 @@ class DBHandler extends mysqli{
 			$category = $product->categoryName;
 			$description = $product->description;
 			$manufacturer = $product->manufacturer;
-			$price = $product->price;
 			$options = $this->getOptions($id);
-			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options, $price));
+			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options));
 		}
 		return $products;
 	}

@@ -8,5 +8,8 @@ function lieferadresse(){
     } 
 }
 function submitLogin(){
-	document.login.submit();
+	document.forms["login"].submit();
+}
+function submitCartForm(productId){
+	document.forms["generated-"+productId].submit();
 }
