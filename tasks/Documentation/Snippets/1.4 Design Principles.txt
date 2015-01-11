@@ -1,0 +1,4 @@
+•	Die Seite soll schlicht gehalten werden. Nicht zu viele Farben und keine auffälligen Animationen beinhalten.
+•	Die Seite soll ansprechend aussehen und es wird viel Wert auf die Erscheinung gelegt. „State Of The Art“ Designmöglichkeiten sollen 	genutzt werden, aber nur ein vorher bestimmtes Subset aller neuen Möglichkeiten. (Nur weil man kann muss man nicht)
+•	Die Seite soll eigenständig aussehen und nicht direkt Aufschluss auf das verwendete Framework geben.
+•	Die Seite soll sich auf das Wesentliche beschränken. Keine Werbungen, unnützen Funktionen oder Spielerein beinhalten. Das Kauferlebnis 	steht im Vordergrund.
