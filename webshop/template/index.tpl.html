@@ -9,7 +9,7 @@
 		<script language="javascript" type="text/javascript" src="./js/ajax.js"></script>
 		<script language="javascript" type="text/javascript" src="./js/form.js"></script>
 		<script language="javascript" type="text/javascript" src="./js/validate.js"></script>
-		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />		
+		<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />	
 		<title>Beer Wine Liquor</title>
 	</head>
 	<body class="show-basket">
@@ -17,18 +17,18 @@
 				<div class="alert-pop-up">
 					<h1 id="alert-pop-up-title"></h1>
 					<p id="alert-pop-up-text"></p>
-					<a href="#" onclick="hidePopUpAlert();return false;">Close</a>
+					<a href="#" onclick="hidePopUpAlert();return false;">@close@</a>
 				</div>
 				<div class="login-pop-up clearfix">
-					<h1>Login</h1>
+					<h1>@login@</h1>
 					<form id="login" name="login" action="login.php" method="post">
-						<input name="username" type="text" size="12" maxlength="12" value="  Benutzername..." 
-							onfocus="if (this.value == '  Benutzername...')
+						<input name="username" type="text" size="12" maxlength="12" value="@userNameHint@" 
+							onfocus="if (this.value == '@userNameHint@')
 							{this.value = '';}" onblur="if (this.value == '')
-							{this.value = '  Benutzername...';}" >
+							{this.value = '@userNameHint@';}" >
 						<input name="password" type="password" size="12" maxlength="12">
-						<a href="javascript:void(0)" onclick="submitLogin();">Login</a>
-						<a href="javascript:void(0)" onclick="hidePopUpLogin();return false;">Close</a>
+						<a href="javascript:void(0)" onclick="submitLogin();">@login@</a>
+						<a href="javascript:void(0)" onclick="hidePopUpLogin();return false;">@close@</a>
 					</form>
 				</div>
 		</div>

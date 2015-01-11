@@ -7,6 +7,16 @@ function fill_template(&$template, $tag, $content) {
 	$template = str_replace("@$tag@", $content, $template);
 }
 
+$DEFAULT_LANG="de";
+if (isset($_SESSION['lang']) && file_exists('lang/' . $_SESSION['lang'] . '.ini')){
+	$filename = 'lang/' . $_SESSION['lang'] . '.ini';
+}
+else {
+	setcookie('lang',$DEFAULT_LANG);
+	$filename = 'lang/' . $DEFAULT_LANG . '.ini';
+}
+$expr = parse_ini_file($filename);
+
 $TEMPLATE_PATH = 'template/';
 $TEMPLATE_EXTENSION = '.tpl.html';
 $dbHandler = new DBHandler();
@@ -37,7 +47,7 @@ if(isset($_SESSION['customer'])){
 	$tmp = $templateNavItem;
 	fill_template($tmp, 'navHref', '?view=account');
 	fill_template($tmp, 'navOnClick', '');
-	fill_template($tmp, 'navText', 'mein konto');
+	fill_template($tmp, 'navText', '@myAccount@');
 	if($view == 'account'){
 		fill_template($tmp, 'navCssClass', 'selected');
 	}
@@ -47,26 +57,24 @@ if(isset($_SESSION['customer'])){
 	fill_template($tmp, 'navHref', 'javascript:void(0)');
 	fill_template($tmp, 'navOnClick', 'showPopUpLogin();return false;');
 	fill_template($tmp, 'navText', 'Login');
-	if($view == 'login'){
-		fill_template($tmp, 'navCssClass', 'selected');
-	}
+	fill_template($tmp, 'navCssClass', '');
 	$navtmp .= $tmp;
 }
 fill_template($template, 'navItems', $navtmp);
 
 //fill basket
 $templateBasket = file_get_contents($TEMPLATE_PATH . 'basket' . $TEMPLATE_EXTENSION);
-
 if($view == 'account' || $view == 'checkout' || $view == 'confirm'){
 	fill_template($template, 'basket', '');
 } else {
 	$templateBasketItem = file_get_contents($TEMPLATE_PATH . 'basketItem' . $TEMPLATE_EXTENSION);
+	$templateBasketSum = file_get_contents($TEMPLATE_PATH . 'basketSum' . $TEMPLATE_EXTENSION);
 	
 	$items = $cart->getItems();
 	
 	if(count($items) >= 1){
 		$basketItemstmp = '';
-		
+		$basketTotal = 0;
 		foreach($items as $key => $obj){
 			$product = $dbHandler->getProduct($key);
 			foreach($obj as $key => $num){
@@ -80,12 +88,17 @@ if($view == 'account' || $view == 'checkout' || $view == 'confirm'){
 				$priceSum = number_format($price * $num, 2);
 				fill_template($tmp, 'priceSum', $priceSum);
 				$basketItemstmp .= $tmp;
+				$basketTotal += $priceSum;
 			}
 		}
+		fill_template($templateBasketSum, 'total', $basketTotal);
 		fill_template($templateBasket, 'basketItems', $basketItemstmp);
+		fill_template($templateBasket, 'basketSum', $templateBasketSum);
 	} else {
-		fill_template($templateBasket, 'basketItems', 'Der Warenkorb ist leer');
+		fill_template($templateBasket, 'basketItems', '@emptyCart@');
+		fill_template($templateBasket, 'basketSum', '');
 	}
+	
 	if(isset($_SESSION['customer'])){
 		fill_template($templateBasket, 'basketHref', '?view=checkout');
 	} else {
@@ -126,9 +139,6 @@ switch($view){
 			$productstmp .= $tmp;
 		}
 		fill_template($templateContent, 'products', $productstmp);
-		break;
-	case 'login':
-		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentLogin' . $TEMPLATE_EXTENSION);
 		break;
 	case 'account':
 		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentAccount' . $TEMPLATE_EXTENSION);
@@ -185,6 +195,17 @@ curl_close($curl);
 $decoded = json_decode($curl_response);
 $quote = $decoded->slip->advice;
 fill_template($template, 'quote', $quote);
+
+//translate UI Elements
+/*
+fill_template($template, 'myAccount', $expr['myAccount']);
+fill_template($template, 'add', $expr['add']);
+fill_template($template, 'yourPurchases', $expr['yourPurchases']);
+fill_template($template, 'emptyCart', $expr['emptyCart']);
+fill_template($template, 'searchHint', $expr['searchHint']);
+fill_template($template, 'search', $expr['search']);
+fill_template($template, 'userNameHint', $expr['userNameHint']);
+*/
 
 //return the site
 echo $template;

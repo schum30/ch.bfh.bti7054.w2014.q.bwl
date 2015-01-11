@@ -1,17 +1,18 @@
 <div id="basket" class="basket">
 	<form class="search-form" >
 		<input class="search-field" type="text" 
-			value="Suchwort eingeben..." 
-			onfocus="if (this.value == 'Suchwort eingeben...')
+			value="@searchHint@" 
+			onfocus="if (this.value == '@searchHint@')
 			{this.value = '';}" onblur="if (this.value == '')
-			{this.value = 'Suchwort eingeben...';}"
+			{this.value = '@searchHint@';}"
 			onkeyup="showResult(this.value)"/>
-		<input class="search-button" type="submit" value="Suchen" />
+		<input class="search-button" type="submit" value="@search@" />
 	</form>
 	
-	<h1>Ihre Eink&auml;ufe:</h1>
+	<h1>@yourPurchases@</h1>
 	 <table border="1" style="width:100%">
 		@basketItems@
+		@basketSum@
 	</table> 
-	<a href="@basketHref@" onclick="@basketOnClick@" >Zur Kasse</a>
+	<a href="@basketHref@" onclick="@basketOnClick@" >@checkout@</a>
 </div>
