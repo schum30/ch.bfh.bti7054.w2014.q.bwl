@@ -1,4 +1,8 @@
 function showResult(str) {
+	selected = document.getElementById("selected");
+	if(selected != null){
+		selected.className = "";
+	}
 	if (str.length==0) {
 		location.reload();
 		return;
@@ -39,4 +43,13 @@ function removeItemFromCart(id, option, amount) {
 	}
 	xmlhttp.open("GET", "cart.php?action=remove&id="+id+"&option="+option+"&amount="+amount,true);
 	xmlhttp.send();
+}
+function changeAddress(id, street, plz, city, title, text){
+	if(id == null || street == null || plz == null || city == null){
+		return;
+	}
+	xmlhttp = new XMLHttpRequest();
+	xmlhttp.onreadystatechange=function(){
+		showPopUpAlert(title, text)
+	}
 }

@@ -1,1 +1,15 @@
-<a href="logout.php">logout</a>
+<div id="account">
+	<div>
+		<h2>@changeDetails@</h2>
+		<form id="generated-change-@addressId@" name="address-@addressId@" action="change.php?action=address" method="post">
+			<input name="firstName" type="text" value="@firstName@">
+			<input name="lastName" type="text" value="@lastName@"><br/>
+			<input name="phone" type="tel" value="@phone@"><br/>
+			<input name="street" type="text" value="@street@"><br/>
+			<input name="plz" type="number" value="@plz@" min="1000" max="9999" size="4">
+			<input name="city" type="text" value="@city@">
+			<a href="javascript:void(0)" onclick="submitAddressChangeForm(@addressId@);">@submit@</a>
+		</form>
+	</div>
+	<a href="logout.php">logout</a>
+</div>

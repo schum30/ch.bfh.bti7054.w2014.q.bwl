@@ -1,21 +1,31 @@
 <?php
+session_start();
+
 include_once('inc/dbHandler.inc.php');
 
 function fill_template(&$template, $tag, $content) {
 	$template = str_replace("@$tag@", $content, $template);
 }
 
+$DEFAULT_LANG="de";
+if (isset($_SESSION['lang']) && file_exists('lang/' . $_SESSION['lang'] . '.ini')){
+	$filename = 'lang/' . $_SESSION['lang'] . '.ini';
+}
+else {
+	$_SESSION['lang'] = $DEFAULT_LANG;
+	$filename = 'lang/' . $DEFAULT_LANG . '.ini';
+}
+$expr = parse_ini_file($filename);
+
 $dbHandler = new DBHandler();
 
 $query = $_GET["query"];
-$products = $dbHandler->getProductsSearch($query);
+$products = $dbHandler->getProductsSearch($query, $_SESSION['lang']);
 
 $TEMPLATE_PATH = 'template/';
 $TEMPLATE_EXTENSION = '.tpl.html';
 $templateContent = file_get_contents($TEMPLATE_PATH . 'contentProducts' . $TEMPLATE_EXTENSION);
 
-$ret = '<h2>Suche</h2>';
-$ret .= '<div id="products">';
 if(count($products) >= 1){
 	$templateProduct = file_get_contents($TEMPLATE_PATH . 'contentProduct' . $TEMPLATE_EXTENSION);
 	$productstmp = '';
@@ -34,8 +44,12 @@ if(count($products) >= 1){
 	}
 	fill_template($templateContent, 'products', $productstmp);
 } else {
-	fill_template($templateContent, 'products', 'No Products were found');
+	fill_template($templateContent, 'products', '@noProductsFound@');
 }
+
+//translate
+fill_template($templateContent, 'add', $expr['add']);
+fill_template($templateContent, 'noProductsFound', $expr['noProductsFound']);
 
 echo $templateContent;
 ?> 

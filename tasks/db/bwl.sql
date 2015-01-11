@@ -24,9 +24,11 @@ CREATE TABLE IF NOT EXISTS `products` (
   `name` varchar(80) NOT NULL,
   `categoryName` varchar(50) NOT NULL,
   `manufacturer` varchar(80) NOT NULL,
-  `description` text,
+  `description_de` text,
+  `description_en` text,
+  `description_fr` text,
   FOREIGN KEY (`categoryName`) REFERENCES `categories` (`name`),
-  FULLTEXT (name,manufacturer,description)
+  FULLTEXT (name,manufacturer,description_de,description_en,description_fr)
 );
 CREATE TABLE `options`(
   `id` int(11) PRIMARY KEY AUTO_INCREMENT,
@@ -66,7 +68,7 @@ INSERT INTO `addresses` (`id`, `street`, `plz`, `city`) VALUES
 (0, 'Mustergasse 11', 1234, 'Musterstadt');
 INSERT INTO `customers` (`name`, `firstName`, `lastName`, `phone`, `addressId`, `password`) VALUES
 ('hm', 'Hans', 'Meier', '034 445 53 06', 0, 'password');
-INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `description`) VALUES
+INSERT INTO `products` (`id`,`name`, `categoryName`, `manufacturer`, `description_de`) VALUES
 (1,'Amber', 'beer', 'Aare Bier', 'Rotkupfer, Caramel, Bisquit, blumig, schöne Malzigkeit, frisch mit Charakter'),
 (2,'Ueli', 'beer', 'Ueli Bier', 'Hell und spritzig, altbewährt'),
 (3,'Brandlöscher','beer','Appenzeller Bier','Amber, süsslich-herb, üppige Karamalznote, mittelkräftig und cremig'),

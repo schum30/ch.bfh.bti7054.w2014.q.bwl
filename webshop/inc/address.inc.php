@@ -1,11 +1,13 @@
 <?php
 class Address{
 	
+	private $id;
 	private $street;
 	private $plz;
 	private $city;
 	
-	function __construct($street, $plz, $city){
+	function __construct($id, $street, $plz, $city){
+		$this->id = $id;
 		$this->street = $street;
 		$this->plz = $plz;
 		$this->city = $city;

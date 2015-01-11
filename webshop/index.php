@@ -12,7 +12,7 @@ if (isset($_SESSION['lang']) && file_exists('lang/' . $_SESSION['lang'] . '.ini'
 	$filename = 'lang/' . $_SESSION['lang'] . '.ini';
 }
 else {
-	setcookie('lang',$DEFAULT_LANG);
+	$_SESSION['lang'] = $DEFAULT_LANG;
 	$filename = 'lang/' . $DEFAULT_LANG . '.ini';
 }
 $expr = parse_ini_file($filename);
@@ -38,8 +38,10 @@ foreach($dbHandler->getCategories() as $categoryItem){
 	fill_template($tmp, 'navText', $categoryItem);
 	if($categoryItem == $category){
 		fill_template($tmp, 'navCssClass', 'selected');
+		fill_template($tmp, 'navCssId', 'selected');
 	} else {
 		fill_template($tmp, 'navCssClass', '');
+		fill_template($tmp, 'navCssId', '');
 	}
 	$navtmp .= $tmp;
 }
@@ -64,19 +66,18 @@ fill_template($template, 'navItems', $navtmp);
 
 //fill basket
 $templateBasket = file_get_contents($TEMPLATE_PATH . 'basket' . $TEMPLATE_EXTENSION);
-if($view == 'account' || $view == 'checkout' || $view == 'confirm'){
-	fill_template($template, 'basket', '');
-} else {
+if($view == 'category' || $view == null){
 	$templateBasketItem = file_get_contents($TEMPLATE_PATH . 'basketItem' . $TEMPLATE_EXTENSION);
 	$templateBasketSum = file_get_contents($TEMPLATE_PATH . 'basketSum' . $TEMPLATE_EXTENSION);
 	
-	$items = $cart->getItems();
-	
-	if(count($items) >= 1){
+	$items = $cart->getItems();	
+	if(count($items) >= 1 && count(current($items)) >= 1){
+		$templateBasketCheckout = file_get_contents($TEMPLATE_PATH . 'basketCheckout' . $TEMPLATE_EXTENSION);
+		fill_template($templateBasket, 'checkoutButton', $templateBasketCheckout);
 		$basketItemstmp = '';
 		$basketTotal = 0;
 		foreach($items as $key => $obj){
-			$product = $dbHandler->getProduct($key);
+			$product = $dbHandler->getProduct($key, $_SESSION['lang']);
 			foreach($obj as $key => $num){
 				$tmp = $templateBasketItem;
 				$price = number_format($product->options[$key],2);
@@ -91,12 +92,14 @@ if($view == 'account' || $view == 'checkout' || $view == 'confirm'){
 				$basketTotal += $priceSum;
 			}
 		}
+		$basketTotal = number_format($basketTotal, 2);
 		fill_template($templateBasketSum, 'total', $basketTotal);
 		fill_template($templateBasket, 'basketItems', $basketItemstmp);
 		fill_template($templateBasket, 'basketSum', $templateBasketSum);
 	} else {
 		fill_template($templateBasket, 'basketItems', '@emptyCart@');
 		fill_template($templateBasket, 'basketSum', '');
+		fill_template($templateBasket, 'checkoutButton', '');
 	}
 	
 	if(isset($_SESSION['customer'])){
@@ -107,20 +110,22 @@ if($view == 'account' || $view == 'checkout' || $view == 'confirm'){
 		fill_template($tmp, 'navOnClick', 'showPopUpLogin();return false;');
 	}
 	fill_template($template, 'basket', $templateBasket);
+} else {
+	fill_template($template, 'basket', '');
 }
 
 //fill content
 switch($view){
 	case 'category':
-		$products = $dbHandler->getProductsByCategory($category);
+		$products = $dbHandler->getProductsByCategory($category, $_SESSION['lang']);
 	case 'search':
 		if(!isset($products)){
-			$products = $dbHandler->getProductsSearch($query);
+			$products = $dbHandler->getProductsSearch($query, $_SESSION['lang']);
 		}
 	case NULL;
 	case 'products':
 		if(!isset($products)){
-			$products = $dbHandler->getAllProducts();
+			$products = $dbHandler->getAllProducts($_SESSION['lang']);
 		}
 		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentProducts' . $TEMPLATE_EXTENSION);
 		$templateProduct = file_get_contents($TEMPLATE_PATH . 'contentProduct' . $TEMPLATE_EXTENSION);
@@ -133,7 +138,8 @@ switch($view){
 			fill_template($tmp, 'productId', $product->id);
 			$options = '';
 			foreach($product->options as $key => $num){
-				$options .= '<option value="' . $key . '">' . $key . 'cl ' . $num .'</option>';
+				$num = number_format($num, 2);
+				$options .= '<option value="' . $key . '">' . $key . 'cl ' . $num .' CHF</option>';
 			}
 			fill_template($tmp, 'options', $options);
 			$productstmp .= $tmp;
@@ -142,6 +148,14 @@ switch($view){
 		break;
 	case 'account':
 		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentAccount' . $TEMPLATE_EXTENSION);
+		$address = $customer->address;
+		fill_template($templateContent, 'firstName', $customer->firstName);
+		fill_template($templateContent, 'lastName', $customer->lastName);
+		fill_template($templateContent, 'phone', $customer->phone);
+		fill_template($templateContent, 'street', $address->street);
+		fill_template($templateContent, 'plz', $address->plz);
+		fill_template($templateContent, 'city', $address->city);
+		fill_template($templateContent, 'addressId', $address->id);
 		break;
 	case 'checkout':
 		$templateContent = file_get_contents($TEMPLATE_PATH . 'contentCheckout' . $TEMPLATE_EXTENSION);
@@ -160,7 +174,7 @@ switch($view){
 			$basketItemstmp = '';
 			
 			foreach($items as $key => $obj){
-				$product = $dbHandler->getProduct($key);
+				$product = $dbHandler->getProduct($key, $_SESSION['lang']);
 				foreach($obj as $key => $num){
 					$tmp = $templateBasketItem;
 					$price = number_format($product->options[$key],2);
@@ -181,6 +195,7 @@ switch($view){
 		fill_template($templateContent, 'options', 'Abrechnung: ' . $_SESSION['paymentmethod']);
 		break;
 	default:
+		header('HTTP/1.0 404 Not Found');
 		$templateContent = file_get_contents($TEMPLATE_PATH . 'content404' . $TEMPLATE_EXTENSION);
 		break;
 }
@@ -197,7 +212,6 @@ $quote = $decoded->slip->advice;
 fill_template($template, 'quote', $quote);
 
 //translate UI Elements
-/*
 fill_template($template, 'myAccount', $expr['myAccount']);
 fill_template($template, 'add', $expr['add']);
 fill_template($template, 'yourPurchases', $expr['yourPurchases']);
@@ -205,7 +219,15 @@ fill_template($template, 'emptyCart', $expr['emptyCart']);
 fill_template($template, 'searchHint', $expr['searchHint']);
 fill_template($template, 'search', $expr['search']);
 fill_template($template, 'userNameHint', $expr['userNameHint']);
-*/
+fill_template($template, 'checkout', $expr['checkout']);
+fill_template($template, 'login', $expr['login']);
+fill_template($template, 'close', $expr['close']);
+fill_template($template, 'invoiceAddress', $expr['invoiceAddress']);
+fill_template($template, 'paymentMethod', $expr['paymentMethod']);
+fill_template($template, 'changeDetails', $expr['changeDetails']);
+fill_template($template, 'submit', $expr['submit']);
+fill_template($template, '404', $expr['404']);
+fill_template($template, 'sendOrder', $expr['sendOrder']);
 
 //return the site
 echo $template;

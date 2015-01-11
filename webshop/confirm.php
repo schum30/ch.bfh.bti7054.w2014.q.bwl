@@ -7,5 +7,8 @@ if(isset($_POST['submit'])){
 	$customer = $_SESSION['customer'];
 	$dbHandler = new DBHandler();
 	$dbHandler->createOrder($cart, $customer);
+	unset($_SESSION['cart']);
+	header('HTTP/1.1 303 See Other');
+	header('Location: index.php');
 }
 ?>

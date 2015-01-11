@@ -237,6 +237,10 @@ body.fixed #navigation {
 	border-radius: 5px;
 }
 
+.basket .amount-picker-line {
+	min-width: 30px;
+}
+
 body.show-basket .basket {
 	display:block;
 }

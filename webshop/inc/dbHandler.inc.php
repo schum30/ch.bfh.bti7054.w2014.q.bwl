@@ -12,7 +12,7 @@ class DBHandler extends mysqli{
 		}
 		return $categories;
 	}
-	public function getProductsByCategory($category){
+	public function getProductsByCategory($category, $lang){
 		$products = array();
 		$stmt = $this->prepare('SELECT * FROM products WHERE categoryName = ?;');
 		$stmt->bind_param('s', $category);
@@ -22,28 +22,30 @@ class DBHandler extends mysqli{
 			$id = $product->id;
 			$name = $product->name;
 			$category = $product->categoryName;
-			$description = $product->description;
+			$prop = 'description_' . $lang;
+			$description = $product->$prop;
 			$manufacturer = $product->manufacturer;
 			$options = $this->getOptions($id);
 			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options));
 		}
 		return $products;
 	}
-	public function getAllProducts() {
+	public function getAllProducts($lang) {
 		$products = array();
 		$res = $this->query('SELECT * FROM products;');
 		while($product = $res->fetch_object()){
 			$id = $product->id;
 			$name = $product->name;
 			$category = $product->categoryName;
-			$description = $product->description;
+			$prop = 'description_' . $lang;
+			$description = $product->$prop;
 			$manufacturer = $product->manufacturer;
 			$options = $this->getOptions($id);
 			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options));
 		}
 		return $products;
 	}
-	public function getProduct($id){
+	public function getProduct($id, $lang){
 		$stmt = $this->prepare('SELECT * FROM products WHERE ID = ?;');
 		$stmt->bind_param('i', $id);
 		$stmt->execute();
@@ -54,20 +56,22 @@ class DBHandler extends mysqli{
 			$id = $product->id;
 			$name = $product->name;
 			$category = $product->categoryName;
-			$description = $product->description;
+			$prop = 'description_' . $lang;
+			$description = $product->$prop;
 			$manufacturer = $product->manufacturer;
 			$options = $this->getOptions($id);
 			return new Product($id, $name, $category, $description, $manufacturer, $options);
 		}
 	}
-	public function getProductsSearch($query){
+	public function getProductsSearch($query, $lang){
 		$products = array();
-		$res = $this->query("SELECT * FROM products WHERE MATCH (name,manufacturer,description) AGAINST ('*$query*' IN BOOLEAN MODE);");
+		$res = $this->query("SELECT * FROM products WHERE MATCH (name,manufacturer,description_de,description_en,description_fr) AGAINST ('*$query*' IN BOOLEAN MODE);");
 		while($product = $res->fetch_object()){
 			$id = $product->id;
 			$name = $product->name;
 			$category = $product->categoryName;
-			$description = $product->description;
+			$prop = 'description_' . $lang;
+			$description = $product->$prop;
 			$manufacturer = $product->manufacturer;
 			$options = $this->getOptions($id);
 			array_push($products,new Product($id, $name, $category, $description, $manufacturer, $options));
@@ -169,9 +173,17 @@ a.optionId = options.id';
 	public function getAddress($id){
 		$res = $this->query("SELECT * FROM addresses WHERE ID = $id");
 		$obj = $res->fetch_object();
-		return new Address($obj->street,$obj->plz,$obj->city);
+		return new Address($id, $obj->street,$obj->plz,$obj->city);
 	}
-	public function createOrder(&$cart, &$customer){
+	public function updateAddress($id, $street, $plz, $city){
+		$query = "UPDATE addresses SET street = ?, plz = ?, city = ? WHERE id = ?";
+		$stmt = $this->prepare($query);
+		$stmt->bind_param('sisi', $street, $plz, $city, $id);
+		$stmt->execute();
+		echo $this->error;
+		$stmt->close();
+	}
+	public function createOrder($cart, $customer){
 		$query = "INSERT orders (customerName, date, status) VALUES (?, NOW(), 'open')";
 		$stmt = $this->prepare($query);
 		
@@ -183,7 +195,7 @@ a.optionId = options.id';
 		$stmt->close();
 		$this->createOrderDetails($cart);
 	}
-	private function createOrderDetails(&$cart){
+	private function createOrderDetails($cart){
 		$items = $cart->getItems();
 		
 		$query = "INSERT orderdetails (orderId, productId, amountOrdered, priceEach) VALUE (?, ?, ?, ?)";
@@ -191,13 +203,13 @@ a.optionId = options.id';
 		
 		$orderId = $this->insert_id;
 		
-		foreach($items as $product){
-			$productId = $product->id;
-			$amountOrdered = $items[$product];
-			$priceEach = $product->price;
-			$stmt->bind_param('iiid',$orderId, $productId, $amountOrdered, $priceEach);
-			
-			$stmt->execute();
+		foreach($items as $productId => $obj){
+			$product = $this->getProduct($productId, 'de');
+			foreach($obj as $key => $num){
+				$price = $product->options[$key];
+				$stmt->bind_param('iiid',$orderId, $productId, $num, $price);
+				$stmt->execute();
+			}
 		}
 		$stmt->close();
 	}
