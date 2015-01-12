@@ -7,6 +7,9 @@
 -- Server Version: 5.6.21
 -- PHP-Version: 5.6.3
 
+CREATE SCHEMA bwl;
+USE bwl;
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 

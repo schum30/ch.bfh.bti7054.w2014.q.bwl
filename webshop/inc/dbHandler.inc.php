@@ -83,7 +83,7 @@ class DBHandler extends mysqli{
 		$ret = array();
 		
 		$query = 'SELECT size,price FROM
-(SELECT * FROM productsOptions JOIN products ON productsOptions.productId = products.id WHERE products.id = ?) AS a
+(SELECT * FROM productsoptions JOIN products ON productsoptions.productId = products.id WHERE products.id = ?) AS a
 JOIN
 options
 ON
